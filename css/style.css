@@ -58,7 +58,6 @@ nav ul a{
 .sidenav ul{background-color: #38578A;}
 .sidenav ul p{padding-left: 16px;color: white;padding-top: 10px;font-family: monospace;margin-top: 0px;}
 .sidenav a.btn{font-size: 10px;border-radius: 5px;}
-body div.right{background-color: #232830;}
 .bg{background-color: #2B456D !important;}
 ul p input{width: 90px !important; background-color: #324D7B !important; border-bottom: transparent !important;}
 .chkbx{left: auto !important;
@@ -82,4 +81,8 @@ span label{
     left: 138px !important;
     top: 276px !important;
     background-color: #324D7B !important; 
+}
+.canvasContainer{
+	background-color: #232830;
+	height: 100%;
 }
