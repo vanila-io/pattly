@@ -6,12 +6,16 @@
 	    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	    <!-- font awesome -->
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-		<!-- Compiled and minified CSS -->
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+		  <!-- Compiled and minified CSS -->
+		  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
 
 	    <!--Let browser know website is optimized for mobile-->
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+      <!-- colorpicker -->
+      <!-- <link rel="stylesheet" type="text/css" href="css/colorpicker.css">
+ -->
+      <link rel="stylesheet" type="text/css" href="css/jcolor.css">
 	    <!-- Custom css -->
 	    <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
@@ -24,7 +28,7 @@
     				<p class="left-align">Canvas Settings</p>
     				<p class="left-align mrgb">
     					<label>width</label>
-						<input type="text" class="ml8">
+						<input id="width" type="text" class="ml8" value="500">
     				</p>
     				<span style="right: 67px;position: absolute;top: 188px;">
     					<label>ratio</label>
@@ -32,18 +36,21 @@
     				</span>
     				<p class="left-align mrgb">
     					<label>height</label>
-						 <input type="text">
+						 <input id="height" type="text" value="500">
     				</p>
     				<p class="left-align mrgb">
     					<label>bg Color</label>
-    					<div class="divl"></div>
-    					<input type="text" class="inps">
+    					<div class="colorpickerHolderdiv my-color-picker"></div>
+    					<input id="colorpickerHolder" type="text" class="inps">
     				</p>
 				</ul>
-				<ul class="pdb20 bg">
+				<ul class="bg " style="text-align: center;">
 					<p class="left-align">Graphics</p>
-    				<a class="waves-effect waves-light btn">Browse</a>
-    				<a class="waves-effect waves-light btn">upload</a>
+    				<a id="browse" class="waves-effect waves-light btn">Browse</a>
+            <input type="file" id="hidden-input" style="display:none;">
+    				<a id="addtext" class="waves-effect waves-light btn">Add TexT</a>
+            <a id="browse1" class="waves-effect waves-light btn" style="display:none;margin-top:5px;">Browse Svg</a>
+            <input type="file" id="hidden-input1" style="display:none;">
 				</ul>          
    
     		</div>
@@ -54,11 +61,26 @@
     	</div>
 	    <!--Import jQuery before materialize.js-->
 	    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	    <!-- Compiled and minified JavaScript -->
-  		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
-  		<!-- fabric js -->
+
+
+      <!-- Compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+
+      <script type="text/javascript" src="js/jquery-ui.js"></script>
+      <!-- colorpicker -->
+      <script type="text/javascript" src="js/jcolor.js"></script>
+      <!-- fabric js -->
   		<script type="text/javascript" src="js/fabric.min.js"></script>
   		<script type="text/javascript" src="js/custom-fabric.js"></script>
+        
+                    <script>
+                          function fbs_click(TheImg) {
+                              u=TheImg.src;
+                               // t=document.title;
+                              t=TheImg.getAttribute('alt');
+                              window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;
+                          }
+                    </script>
   		<script type="text/javascript" src="js/script.js"></script>
     </body>
   </html>

@@ -1,3 +1,7 @@
+input{
+	    text-align: center;
+	    border-bottom: transparent !important;
+}
 .row{margin-bottom: 0px;}
 .pd0{padding: 0px !important;}
 .rpr{
@@ -44,7 +48,6 @@ nav ul a{
 	color:blue;
 }
 .sidenav ul{
-	text-align: center;
 	margin: 0px;
 	padding-bottom: 20px;
 }
@@ -57,9 +60,9 @@ nav ul a{
 .sidenav h5{color: white;padding-top: 10px;padding-bottom: 20px;}
 .sidenav ul{background-color: #38578A;}
 .sidenav ul p{padding-left: 16px;color: white;padding-top: 10px;font-family: monospace;margin-top: 0px;}
-.sidenav a.btn{font-size: 10px;border-radius: 5px;}
+.sidenav a.btn{font-size: 10px;border-radius: 5px;padding: 0px 14px;}
 .bg{background-color: #2B456D !important;}
-ul p input{width: 90px !important; background-color: #324D7B !important; border-bottom: transparent !important;}
+ul p input{width: 90px !important; background-color: #324D7B !important;}
 .chkbx{left: auto !important;
     visibility: visible !important;}
 span label{
@@ -67,20 +70,20 @@ span label{
     right: -45px;
     top: -3px;
 }
-.divl{
-	height: 50px;
-    width: 50px;
-    background-color: blue;
+.colorpickerHolderdiv{
     position: fixed;
     top: 266px;
     left: 80px;
 }
-.inps{width: 50px !important;
-	height: 30px !important;
+#colorpickerHolder{
+	color: white;
+    width: 60px !important;
+    height: 30px !important;
     position: absolute !important;
-    left: 138px !important;
-    top: 276px !important;
-    background-color: #324D7B !important; 
+    left: 132px !important;
+    top: 272px !important;
+    background-color: #324D7B !important;
+    font-size: 10px;
 }
 .canvasContainer{
 	background-color: #232830;
