@@ -44,18 +44,28 @@
     					<input id="colorpickerHolder" type="text" class="inps">
     				</p>
 				</ul>
-				<ul class="bg " style="text-align: center;">
-					<p class="left-align">Graphics</p>
-    				<a id="browse" class="waves-effect waves-light btn">Browse</a>
-            <input type="file" id="hidden-input" style="display:none;">
-    				<a id="addtext" class="waves-effect waves-light btn">Add TexT</a>
-            <a id="browse1" class="waves-effect waves-light btn" style="display:none;margin-top:5px;">Browse Svg</a>
-            <input type="file" id="hidden-input1" style="display:none;">
-				</ul>          
+    			<ul class="bg " style="text-align: center;">
+    				<p class="left-align">Graphics</p>
+        			<a id="browse" class="waves-effect waves-light btn">Browse</a>
+                    <input type="file" id="hidden-input" style="display:none;">
+                			<a id="addtext" class="waves-effect waves-light btn">Add TexT</a>
+                    <a id="browse1" class="waves-effect waves-light btn" style="display:none;margin-top:5px;">Browse Svg</a>
+                    <input type="file" id="hidden-input1" style="display:none;">
+                    <form action="#">
+                        <p class="range-field">
+                          <label>Opactiy</label>
+                          <input type="range" id="test5" min="0" max="100" />
+                        </p>
+                    </form>
+                    <a class="waves-effect waves-light btn" id="duplicate">Duplicate</a>
+                    <a class="waves-effect waves-light btn" id="remove">Remove</a><br>
+                    <div class="my-color-picker1" style="color: green;left: 20px;top:16px;"></div><br>
+                   
+    			</ul>          
    
     		</div>
     		<div class="col s10 right canvasContainer">
-    			<div class="col s12" style="padding-top:100px;">
+    			<div class="col s12 canvasContainer" style="padding-top:100px;">
 	    			<canvas id="myCanvas"></canvas>
 	    		</div>
     	</div>

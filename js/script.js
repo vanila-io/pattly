@@ -1,5 +1,7 @@
 $(document).ready(function(){
 		/* find ratio of canvas */
+	var cw = $('.canvasContainer').width();
+	var ch = $('.canvasContainer').height();
 	function calculateCanvasSize(original_width,original_height,type){
 	    var pageMaxHeight = $('.canvasarea').height();
 	    canvasWidth = original_width;
@@ -30,7 +32,6 @@ $(document).ready(function(){
             var reader = new FileReader();
             reader.onload = function (e) {
                	prototypefabric.addImage(e.target.result);
-                console.log(e);
                 setTimeout(function(){
                     /*popups.imagepopup.update(prototypefabric.getCurrentObject());
                     popups.imagepopup.show();
@@ -56,7 +57,6 @@ $(document).ready(function(){
 	/* browse / browse Svg*/
 	$('#browse,#browse1').click(function(){
 		$("#hidden-input").trigger('click');
-		console.log();
 	});
 	$("#hidden-input,#hidden-input1").on('change', function(){
         readURL(this);
@@ -76,8 +76,25 @@ $(document).ready(function(){
     ColorPicker.on('newcolor', function (ev, colorpicker, component, value) {
         color = colorpicker.toCssString();
         prototypefabric.changeBackground(color);
-      	console.log(col = $('.output-wrapper').html());
         $('#colorpickerHolder').val($('.output-wrapper').html());
     });
-
+    ColorPicker = $('.my-color-picker1').colorpicker({
+	  color: 'hsl(10, 30%, 30%)',
+	  colorSpace: 'hsl',
+	  displayColor: 'hex'
+	});
+    ColorPicker.on('newcolor', function (ev, colorpicker, component, value) {
+        color = colorpicker.toCssString();
+        prototypefabric.setcolor(color);
+    });
+    $("#test5").change(function(){
+    	var opacity = $("#test5").val();
+    	prototypefabric.opacity(opacity);
+    });
+    $("#duplicate").click(function(){
+    	prototypefabric.duplicate();
+    });
+    $("#remove").click(function(){
+    	prototypefabric.removeObj();
+    });
 });
