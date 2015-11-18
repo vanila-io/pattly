@@ -1,0 +1,158 @@
+html,body{
+	height: 100%;
+	width: 100%;
+	margin:0;
+	padding:0;
+	overflow: hidden;
+	background-color: rgba(103, 125, 122, 1);
+}
+
+.contWrapper{
+	height: 100%;
+}
+
+.contWrapper{
+	height: 100%;
+width: 100%;
+}
+
+.bgImage{
+	background-image: url("http://jelenajovanovic.im/img/seamlessBg.png");
+background-position: center center;
+height: 100%;
+width: 100%;
+opacity: 0.05;
+}
+
+.container{
+	background:#D6DADB;
+	border-radius: 6px;
+	height: 70%;
+box-shadow: -5px -5px 20px 5px rgba(0, 0, 0, 0.5);
+}
+
+.mainCont{
+	top: 0;
+position: absolute;
+width: 100%;
+height: 100%;
+}
+
+h1{
+color: #F2F2F2;
+text-align: center;
+font-weight: 700;
+font-family: 'Josefin Sans', sans-serif;
+text-shadow: 1px 1px #f2f2f2;
+}
+
+#nav-mobile{
+	left: auto !important;
+	top: auto !important;
+	border-radius: 6px 0 0 6px;
+	height: 70%;
+	border: none;
+}
+
+.side-nav .collapsible-header{
+margin: 0px;
+min-height: 5rem;
+line-height: 5rem;
+color: rgb(160, 164, 167);
+text-transform: uppercase;
+font-size: 0.8em;
+font-weight: bold;
+padding: 0px 20px;
+}
+
+.collapsible-header span{
+	margin-left: 17px;
+}
+
+
+.canvas{
+	margin-left:10px!important;
+}
+
+.side-nav{
+	background:#41464C;
+}
+
+.side-nav li:first-child{
+	background:#363D43;
+}
+
+.side-nav li:first-child:hover{
+	background:#363D43;
+}
+
+.side-nav li:first-child:hover .collapsible-header{
+	border-left: none!important;
+}
+
+.side-nav li{
+	background:#41464C;
+	border-bottom: 2px solid #343B41;
+}
+
+.side-nav li.active {
+    background-color: #363D43;
+}
+.side-nav li:hover, .side-nav li.active {
+    background-color: transparent;
+}
+.side-nav li:hover .collapsible-header, .side-nav li.active .collapsible-header{
+border-left: 4px solid #E67066;
+}
+ .collapsible-body{
+background-color: #363D43!important;
+}
+
+.collapsible-header img{
+	float: left;
+display: block;
+margin-top: 20px;
+width: 35px;
+height: 35px;
+
+}
+
+
+.export, .add{
+	width: 24px!important;
+	height: 24px!important;
+	margin-top: 25px!important;
+}
+
+.dash{
+	width: 22px!important;
+	height: 22px!important;
+	margin-top: 27px!important;
+	margin-left: 5px;
+}
+
+.collapsible-body{
+	overflow: hidden;
+padding: 20px 10px;
+}
+
+.side-nav a{
+	height: auto;
+line-height: normal;
+padding: 8px 0!important;
+background: transparent;
+text-transform: uppercase;
+font-size: 0.7em;
+color:#A0A4A7!important;
+width:49%;
+font-weight: bold;
+float: left;
+}
+.side-nav a:hover{
+	background: transparent;
+	color:#fff!important;
+	}
+
+	#addtext{
+		float:right;
+	}
