@@ -64,6 +64,16 @@ $(document).ready(function(){
 	$("#hidden-input,#hidden-input1").on('change', function(){
         readURL(this);
     });
+    $("#test5").change(function(){
+    	var opacity = $("#test5").val();
+    	prototypefabric.opacity(opacity);
+    });
+    $("#duplicate").click(function(){
+    	prototypefabric.duplicate();
+    });
+    $("#remove").click(function(){
+    	prototypefabric.removeObj();
+    });
 
 	$("input").keyup(function(){
 		var width = $("#width").val();
@@ -90,14 +100,5 @@ $(document).ready(function(){
         color = colorpicker.toCssString();
         prototypefabric.setcolor(color);
     });
-    $("#test5").change(function(){
-    	var opacity = $("#test5").val();
-    	prototypefabric.opacity(opacity);
-    });
-    $("#duplicate").click(function(){
-    	prototypefabric.duplicate();
-    });
-    $("#remove").click(function(){
-    	prototypefabric.removeObj();
-    });
+    
 });
