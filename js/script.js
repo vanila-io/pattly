@@ -74,7 +74,12 @@ $(document).ready(function(){
     $("#remove").click(function(){
     	prototypefabric.removeObj();
     });
-
+$("#duplicateText").click(function(){
+    	prototypefabric.duplicate();
+    });
+    $("#removeText").click(function(){
+    	prototypefabric.removeObj();
+    });
 	$("input").keyup(function(){
 		var width = $("#width").val();
 		var height = $("#height").val();
@@ -102,3 +107,9 @@ $(document).ready(function(){
     });
     
 });
+
+var range_wrapper = '.range-field';
+$(document).on('input change', range_type, function(e) {
+       var thumb = $(this).siblings('.thumb');
+       thumb.find('.value').html($(this).val());
+     });

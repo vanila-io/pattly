@@ -19,6 +19,7 @@
       <link rel="stylesheet" type="text/css" href="css/jcolor.css">
 	    <!-- Custom css -->
 	    <link rel="stylesheet" type="text/css" href="css/custom.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.1/spectrum.min.css">
     </head>
     <body>
     <div class="contWrapper">
@@ -27,52 +28,73 @@
     </div>
     
     <div class="mainCont">
-    <h1>pattapp</h1>
+    <h1>pattly</h1>
+    
     <!--<a href="#" data-activates="nav-mobile" class="button-collapse "><i class="mdi-navigation-menu"></i></a>-->
     	<div class="container">
 
     	<ul style="width: 240px;" id="nav-mobile" class="side-nav fixed collapsible" data-collapsible="accordion">
         		<li class="no-padding">
-			      <div class="collapsible-header"><img src="img/dashboard.png" alt="" class="dash"><span>pattapp</span></div>
+			      <div class="collapsible-header"><img src="img/dashboard.png" alt="" class="dash"><span>pattly</span></div>
 			    </li>
 			    <li class="no-padding">
 			      <div class="collapsible-header"><img src="img/canvas.png" alt=""><span class="canvas">Canvas Settings</span></div>
 			      <div class="collapsible-body">
-    					<label>width</label>
+            <div class="input-field">
 						<input id="width" type="text" class="ml8" value="500">
-    				
-    				
-    					<label>height</label>
+            <label class="active" for="width">Width</label>
+    				</div>
+    				<div class="input-field">
 						 <input id="height" type="text" value="500">
-    				
+             <label class="active" for="height">Height</label>
+    				</div>
+            <div class="input-field">
     				<input type="checkbox" id="ratio" class="chkbx"  value="Car">
       				<label for="ratio">Ratio</label>
+              </div>
     				<!--<p class="left-align mrgb">
     					<label>bg Color</label>
     					<div class="colorpickerHolderdiv my-color-picker"></div>
     					<input id="colorpickerHolder" type="text" class="inps">
     				</p>-->
+                    <input type='text' class="insp custom">
 			      </div>
 			    </li>
 			    <li class="no-padding">
 			      <div class="collapsible-header active"><img src="img/add.png" alt="" class="add"><span>Graphics</span></div>
 			      <div class="collapsible-body">
-    					<a id="browse" class="waves-effect waves-light btn">Browse</a>
+    					<a id="browse" class="waves-effect waves-light btn btnBrowse">Upload icon</a>
+
             			<input type="file" id="hidden-input" style="display:none;">
-    					<a id="addtext" class="waves-effect waves-light btn">Add TexT</a>
 			            <a id="browse1" class="waves-effect waves-light btn" style="display:none;margin-top:5px;">Browse Svg</a>
 			            <input type="file" id="hidden-input1" style="display:none;">
-			            <form action="#">
-                        <p class="range-field">
-                          <label>Opactiy</label>
-                          <input type="range" id="test5" min="0" max="100" />
-                        </p>
+			              <form action="#" class="formGraphics">
+                        <div class="range-field">
+                          <label for="test5">Opacity</label>
+                          <input type="range" id="test5" min="0" max="100" oninput="showVal(this.value)" onchange="showVal(this.value)">
+                        </div>
                     </form>
                     <a class="waves-effect waves-light btn" id="duplicate">Duplicate</a>
                     <a class="waves-effect waves-light btn" id="remove">Remove</a><br>
-                    <div class="my-color-picker1" style="color: green;left: 20px;top:16px;"></div>
+                    <input type='text' class="insp custom">
 			      </div>
 			    </li>
+          <li class="no-padding">
+            <div class="collapsible-header active"><img src="img/add.png" alt="" class="add"><span>Text</span></div>
+            <div class="collapsible-body">
+              <a id="addtext" class="waves-effect waves-light btn  btnBrowse">Add Text</a>
+                  <form action="#" class="formText">
+                        <div class="range-field">
+                          <label for="test5">Opacity</label>
+                          <input type="range" id="test5" min="0" max="100" oninput="showVal(this.value)" onchange="showVal(this.value)">
+                        </div>
+                    </form>
+                    <a class="waves-effect waves-light btn" id="duplicateText">Duplicate</a>
+                    <a class="waves-effect waves-light btn" id="removeText">Remove</a><br>
+                    <input type='text' class="insp custom">
+                    
+            </div>
+          </li>
 			    <li class="no-padding">
 			      <div class="collapsible-header"><img src="img/export.png" alt="" class="export"><span>Export</span></div>
 			      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
@@ -110,5 +132,12 @@
                           }
                     </script>
   		<script type="text/javascript" src="js/script.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.1/spectrum.min.js"></script>
+
+<script>
+$(".custom").spectrum({
+    color: "#f00"
+});
+</script>
     </body>
 </html>
