@@ -28,18 +28,21 @@ $(document).ready(function(){
 	}
 	/* get file type source */
 	var readURL = function(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-               	prototypefabric.addImage(e.target.result);
-                setTimeout(function(){
-                    /*popups.imagepopup.update(prototypefabric.getCurrentObject());
-                    popups.imagepopup.show();
-                    popups.imagepopupResponsive.show();*/
-                    $(".file-upload").val('');
-                },1000);
-            }
-            reader.readAsDataURL(input.files[0]);
+        if (input.files) {
+			for (var i = 0 ; i < input.files.length; i++) {
+				var reader = new FileReader();
+	            reader.onload = function (e) {
+	            	//console.log(e);
+	               	prototypefabric.addImage(e.target.result);
+	                setTimeout(function(){
+	                    /*popups.imagepopup.update(prototypefabric.getCurrentObject());
+	                    popups.imagepopup.show();
+	                    popups.imagepopupResponsive.show();*/
+	                    $(".file-upload").val('');
+	                },1000);
+	            }
+	            reader.readAsDataURL(input.files[i]);
+			};
         }
     }
 
@@ -63,16 +66,6 @@ $(document).ready(function(){
 	});
 	$("#hidden-input,#hidden-input1").on('change', function(){
         readURL(this);
-    });
-    $("#test5").change(function(){
-    	var opacity = $("#test5").val();
-    	prototypefabric.opacity(opacity);
-    });
-    $("#duplicate").click(function(){
-    	prototypefabric.duplicate();
-    });
-    $("#remove").click(function(){
-    	prototypefabric.removeObj();
     });
 
 	$("input").keyup(function(){
@@ -100,5 +93,18 @@ $(document).ready(function(){
         color = colorpicker.toCssString();
         prototypefabric.setcolor(color);
     });
-    
+    $("#test5").change(function(){
+    	var opacity = $("#test5").val();
+    	prototypefabric.opacity(opacity);
+    });
+    $("#duplicate").click(function(){
+    	prototypefabric.duplicate();
+    });
+    $("#remove").click(function(){
+    	prototypefabric.removeObj();
+    });
+    $(document).delegate('#export','click', function(){
+    	alert("hi");
+    	prototypefabric.canvasExport();
+    });
 });
