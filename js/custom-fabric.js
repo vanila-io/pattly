@@ -8,17 +8,136 @@ var prototypefabric = new function(){
 		canvas.renderAll();
 	}
 	this.setCanvasWidth = function(width, height){
-		canvas.setHeight(height);
-		canvas.setWidth(width);
+		if( width > height ){
+			r = height/width;
+			iwidth = 500;
+			iheight = 500 * r;
+		}
+		else
+		{
+			r = width / height;
+			iheight = 500;
+			iwidth = 500 * r;
+		}
+		canvas.setHeight(iheight);
+		canvas.setWidth(iwidth);
 		canvas.renderAll();
 	}
+	
+	/******************************* AHMAD'S CODE *******************************/
+	
+	this.setobjectsize = function(width, height)
+	{
+		//console.log("value Width "+width+" Value Height "+height);
+		var cw = Math.floor($('.canvasBig').width());
+		var ch = Math.floor($('.container').height());
+		var OrginalWidth = 0;
+		var OrginalHeight = 0;
+		if(width > height){
+			if(width > cw){
+				var r = height/width;
+				OrginalWidth = cw ;
+				OrginalHeight = cw * r;
+			}
+		}
+		
+		else if(width == height){
+			console.log(cw,ch);
+			if(cw > ch){
+				var r = width/height;
+				OrginalWidth = cw/r ;
+				OrginalHeight = cw;
+			}
+			else if(cw > ch){
+				var r = height/width;
+				OrginalWidth = ch/r ;
+				OrginalHeight = ch;
+			}
+			else
+			{
+				OrginalWidth = cw ;
+				OrginalHeight = ch;
+			}
+			console.log(OrginalWidth,OrginalHeight);
+		}
+		else if(height > width){
+				var r = width/height;
+				OrginalWidth = ch * r ;
+				OrginalHeight = ch;
+		}
+		canvas.setHeight(OrginalHeight);
+		canvas.setWidth(OrginalWidth);
+		canvas.renderAll();
+	}
+
+	this.calGcd = function (a, b) {
+		if (b) {
+			return this.calGcd(b, a % b);
+		} else {
+			return Math.abs(a);
+		}
+	}
+
+    this.ExportImage = function(ExportWidth,ExportHeight)
+    {
+        canvas.discardActiveGroup();
+        canvas.discardActiveObject();
+        var base64 = canvas.toDataURL({
+            format: 'jpeg',
+            quality : 1
+        });
+        var newcanvas = document.createElement('canvas');
+        var TempCanvas = new fabric.Canvas(newcanvas, {
+            height : ExportHeight,
+            width : ExportWidth
+        });
+
+        //var TempCanvas = new fabric.Canvas(fabric.util.createCanvasElement());//Make New Canvas
+        /*TempCanvas.setDimensions({
+                'height' : ExportHeight,
+                'width' : ExportWidth
+            });*/
+        TempCanvas.setBackgroundColor({
+            source: base64,
+            repeat: 'repeat',
+            offsetX : 0,
+            offsetY:0
+        }, TempCanvas.renderAll.bind(TempCanvas));
+        var Tempbase64 = canvas.toDataURL({
+            format: 'png'
+        });
+        console.log(TempCanvas, Tempbase64);
+        url = Tempbase64;
+        window.open(url);
+        window.focus();
+    }
+
+	/******************************* AHMAD'S CODE END *******************************/
+	
 	this.addImage = function(source){
 		fabric.Image.fromURL(source, function(img) {
 			img.class = 'image';
 			img.source = source;
+			img.width = '100';
+			img.height = '100';
+
+	        $("#imageColorPicker").spectrum({
+	            color: "blue",
+	            allowEmpty:true,
+	            change: function(color) {
+	                var filter = new fabric.Image.filters.Tint({
+						color: color.toHexString(),
+						opacity: 1
+					});
+					img.filters.push(filter);
+					img.applyFilters(canvas.renderAll.bind(canvas));
+	            }
+	        });
+			
 			canvas.add(img);
 		});
 	}
+
 	this.changeBackground = function(color){
 		canvas.setBackgroundColor(color);
 		canvas.renderAll();
@@ -91,6 +210,18 @@ var prototypefabric = new function(){
 	this.removeObj =function (){
 		var obj = canvas.getActiveObject();
 		obj.remove();
+		canvas.renderAll();
+	}
+
+	this.tint = function(color){
+		var obj = canvas.getActiveObject();
+		var filter = new fabric.Image.filters.Tint({
+			color: color,
+			opacity: 0.5
+		});
+		object.filters.push(filter);
+		object.applyFilters(canvas.renderAll.bind(canvas));
+		canvas.renderAll();
 	}
 	canvas.renderAll();
 }

@@ -156,3 +156,46 @@ float: left;
 	#addtext{
 		float:right;
 	}
+
+	input[type="range"]{
+		border:none;
+	}
+
+	input[type="text"]{
+		color:#fff;
+		font-weight: bold;
+	}
+
+	.input-field label{
+		left:0;
+	}
+
+	.canvasBig{
+		margin-left: 240px;
+
+	}
+
+	.floatLeft{
+		float:left;
+	}
+
+	.formGraphics, .formText{
+	float: left;
+	display: block;
+	overflow: hidden;
+	margin-top: 10px;
+	}
+
+	.btnBrowse{
+		display: block;
+		overflow: hidden;
+		float: left!important;
+	}
+
+	input[type="range"] + .thumb.active{
+		top:0!important;
+	}
+
+	.sp-replacer{
+		margin-top:20px!important;
+	}
