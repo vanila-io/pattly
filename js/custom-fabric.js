@@ -1,4 +1,5 @@
 prototypefabric;
+var r = 0;
 var prototypefabric = new function(){
 	var canvas = new fabric.Canvas('myCanvas', { width: 400, height: 400, backgroundColor: '#0D1E2C'});
 	canvas.renderAll();
@@ -27,46 +28,10 @@ var prototypefabric = new function(){
 	/******************************* AHMAD'S CODE *******************************/
 	
 	this.setobjectsize = function(width, height)
-	{
-		//console.log("value Width "+width+" Value Height "+height);
-		var cw = Math.floor($('.canvasBig').width());
-		var ch = Math.floor($('.container').height());
-		var OrginalWidth = 0;
-		var OrginalHeight = 0;
-		if(width > height){
-			if(width > cw){
-				var r = height/width;
-				OrginalWidth = cw ;
-				OrginalHeight = cw * r;
-			}
-		}
-		
-		else if(width == height){
-			console.log(cw,ch);
-			if(cw > ch){
-				var r = width/height;
-				OrginalWidth = cw/r ;
-				OrginalHeight = cw;
-			}
-			else if(cw > ch){
-				var r = height/width;
-				OrginalWidth = ch/r ;
-				OrginalHeight = ch;
-			}
-			else
-			{
-				OrginalWidth = cw ;
-				OrginalHeight = ch;
-			}
-			console.log(OrginalWidth,OrginalHeight);
-		}
-		else if(height > width){
-				var r = width/height;
-				OrginalWidth = ch * r ;
-				OrginalHeight = ch;
-		}
-		canvas.setHeight(OrginalHeight);
-		canvas.setWidth(OrginalWidth);
+    {
+        //console.log('Recieved width : '+width+' Height : '+height);
+		canvas.setHeight(height);
+		canvas.setWidth(width);
 		canvas.renderAll();
 	}
 
@@ -78,48 +43,49 @@ var prototypefabric = new function(){
 		}
 	}
 
-    this.ExportImage = function(ExportWidth,ExportHeight)
+    this.ExportImage = function(width, height,ExportWidth,ExportHeight)
     {
+        if(width > height)
+        {
+            r = width/height;
+        }
+        else if (width < height)
+        {
+            r = height/width;
+        }
+        else {
+            r = 1;
+        }
+        console.log('Ratio : '+ratio+' Export Width : '+ExportWidth+' Export Height : '+ExportHeight);
+        var cw = Math.floor($('.canvasBig').width());
+        var ch = Math.floor($('.container').height());
+        //canvas.setHeight(ch*r);
+        //canvas.setWidth(cw*r);
+        //console.log("r : "+r+" cw : "+cw+" ch : "+ch);
         canvas.discardActiveGroup();
         canvas.discardActiveObject();
-        var base64 = canvas.toDataURL({
-            format: 'jpeg',
-            quality : 1
+        var _base64 = canvas.toDataURL();
+        TempCanvas = window._tmpCanvas = new fabric.Canvas(fabric.util.createCanvasElement());
+        TempCanvas.setWidth(ExportWidth);
+        TempCanvas.setHeight(ExportHeight);
+        TempCanvas.setBackgroundColor({source: _base64, repeat: 'repeat'}, function () {
+            TempCanvas.renderAll();
+            url = TempCanvas.toDataURL();
+            window.open(url);
+            window.focus();
         });
-        var newcanvas = document.createElement('canvas');
-        var TempCanvas = new fabric.Canvas(newcanvas, {
-            height : ExportHeight,
-            width : ExportWidth
-        });
-
-        //var TempCanvas = new fabric.Canvas(fabric.util.createCanvasElement());//Make New Canvas
-        /*TempCanvas.setDimensions({
-                'height' : ExportHeight,
-                'width' : ExportWidth
-            });*/
-        TempCanvas.setBackgroundColor({
-            source: base64,
-            repeat: 'repeat',
-            offsetX : 0,
-            offsetY:0
-        }, TempCanvas.renderAll.bind(TempCanvas));
-        var Tempbase64 = canvas.toDataURL({
-            format: 'png'
-        });
-        console.log(TempCanvas, Tempbase64);
-        url = Tempbase64;
-        window.open(url);
-        window.focus();
+        //prototypefabric.setobjectsize(width,height);
     }
 
+   
 	/******************************* AHMAD'S CODE END *******************************/
 	
 	this.addImage = function(source){
 		fabric.Image.fromURL(source, function(img) {
 			img.class = 'image';
 			img.source = source;
-			img.width = '100';
-			img.height = '100';
+			img.width = 100;
+			img.height = 100;
 
 	        $("#imageColorPicker").spectrum({
 	            color: "blue",

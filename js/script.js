@@ -89,64 +89,95 @@ $(document).ready(function(){
     });
 
 	/***************************** AHMAD's CODE *****************************/
+    function SizeSetup(width,height,divwidth,divheight)
+    {
+        if(width >= height){
+            if(width >= divwidth){
+                var r = divwidth / width;
+                width = parseInt(width * r);
+                height = parseInt(height * r);
+                if(height>divheight) {
+                    //console.log('Height Here ::: '+height);
+                    height = parseInt(divheight - 1);
+                }
+            }
+            else{
+                if(height >= divheight){
+                    var r = divheight / height ;
+                    width = parseInt(width * r);
+                    height = parseInt(height * r);
+                }
+            }
+        }
+        else{
+            if(height >= divheight){
+                var r = divheight / height;
+                width = parseInt(width * r);
+                height = parseInt(height * r);
+                if(width>divwidth)
+                {
+                    //console.log('Height Here ::: '+width);
+                    width = parseInt(divwidth-1);
+                }
+            }
+            else{
+                if(width >= divwidth){
+                    var r = divwidth / width;
+                    width = parseInt(width * r);
+                    height = parseInt(height * r);
+                }
+            }
+        }
+        //console.log('Width : '+width+' Height : '+height+' Canvas Width : '+divwidth+' Canvas Height : '+divheight);
+        prototypefabric.setobjectsize(width, height);
+        if(width<divwidth)
+        {
+            var temp_width = parseInt((divwidth-width)/2);
+            //console.log('Width Center ::: '+temp_width+' Width Big Canvas : '+divwidth+' Width Canvas : '+width);
+            $('.canvas-container').css({
+                'position' :'absolute',
+                'margin-left': temp_width+'px'
+            });
+        }
+        if(height<divheight) {
+            var cn_height = $(".canvas-container").height();
+            var c_height = $('.container').height();
+            var temp_height =  parseInt((c_height - cn_height)/2);
+            //console.log('Height Center ::: '+temp_height);
+            $('.canvas-container').css({
+                'position' :'absolute',
+                'margin-top': temp_height+'px'
+            });
+        }
+        if((height+divheight)>divheight)
+        {
+            var cn_height = $(".canvas-container").height();
+            var c_height = $('.container').height();
+            var temp_height =  parseInt((c_height - cn_height)/2);
+            //console.log('Height Center ::: '+temp_height);
+            $('.canvas-container').css({
+                'position' :'absolute',
+                'margin-top': temp_height+'px'
+            });
+        }
 
-    $("#width").keyup(function(){
-		var chatinput = document.getElementById("width").value;
-		if (chatinput == "" || chatinput.length == 0 || chatinput == null)//If Width equals Null Exit
-		{
-			return;
-		}
-		chatinput = document.getElementById("height").value;
-		if (chatinput == "" || chatinput.length == 0 || chatinput == null)//If Height equals Null Exit
-		{
-			return;
-		}
-		if(flag == 1){
-			if($(this).attr('id') == 'width'){// Check if width has been changed
-				var Temp_width = parseInt($("#width").val());
-				var Temp_height = Temp_width * (ratio_HW);//Height will change accordingly
-				$('#height').val(parseInt(Temp_height));
-				prototypefabric.setobjectsize(parseInt($("#width").val()),parseInt(Temp_height));
-			}
-			if($(this).attr('id') == 'height'){// Check if height has been changed
-				console.log();
-				var Temp_height = parseInt($("#height").val());
-				var Temp_width = Temp_height * (ratio_WH);//Width will change accordingly
-				$('#width').val(parseInt(Temp_width));
-				prototypefabric.setobjectsize(parseInt(Temp_width),parseInt($("#height").val()));
-			}
-			return;
-		}
-		//console.log('asd');
-		prototypefabric.setobjectsize(parseInt($("#width").val()),parseInt($("#height").val()));
-		if(parseInt($("#width").val()) > parseInt($("#height").val()))
-		{
-			var cn_height = $(".canvas-container").height();
-			var c_height = Math.floor($('.container').height());
-			var temp_height = (c_height - cn_height)/2;
-			console.log(cn_height, c_height, temp_height,parseInt($("#height").val()));
-			if(temp_height > 0){
-				$('.canvas-container').css({
-					'position' :'absolute',
-					'margin-top': temp_height+'px'
-				});
-			}
-			else{
-				$('.canvas-container').css({
-					'position' :'relative',
-					'margin-top': '0px'
-				});
-			}
-		}
-		else{
-			$('.canvas-container').css({
-				'position' :'relative',
-				'margin-top': '0px'
-			});
-		}
-	});
+        if((width+divwidth)>divwidth)
+        {
+            var temp_width = parseInt((divwidth-width)/2);
+            //console.log('Width Center ::: '+temp_width+' Width Big Canvas : '+divwidth+' Width Canvas : '+width);
+            $('.canvas-container').css({
+                'position' :'absolute',
+                'margin-left': temp_width+'px'
+            });
+        }
+    }
 
-    $("#height").keyup(function(){
+	$("#width,#height").keyup(function(){
+		var width  = $('#width').val();
+		var height = $('#height').val();
+		var divwidth = $('.canvasBig').width();
+		var divheight = $('.container').height();
+
         var chatinput = document.getElementById("width").value;
         if (chatinput == "" || chatinput.length == 0 || chatinput == null)//If Width equals Null Exit
         {
@@ -162,45 +193,22 @@ $(document).ready(function(){
                 var Temp_width = parseInt($("#width").val());
                 var Temp_height = Temp_width * (ratio_HW);//Height will change accordingly
                 $('#height').val(parseInt(Temp_height));
-                prototypefabric.setobjectsize(parseInt($("#width").val()),parseInt(Temp_height));
+                SizeSetup(width,parseInt(Temp_height),divwidth,divheight);
             }
             if($(this).attr('id') == 'height'){// Check if height has been changed
                 console.log();
                 var Temp_height = parseInt($("#height").val());
                 var Temp_width = Temp_height * (ratio_WH);//Width will change accordingly
                 $('#width').val(parseInt(Temp_width));
-                prototypefabric.setobjectsize(parseInt(Temp_width),parseInt($("#height").val()));
+                SizeSetup(parseInt(Temp_width),height,divwidth,divheight);
             }
             return;
         }
         //console.log('asd');
-        prototypefabric.setobjectsize(parseInt($("#width").val()),parseInt($("#height").val()));
-        if(parseInt($("#width").val()) > parseInt($("#height").val()))
-        {
-            var cn_height = $(".canvas-container").height();
-            var c_height = Math.floor($('.container').height());
-            var temp_height = (c_height - cn_height)/2;
-            console.log(cn_height, c_height, temp_height,parseInt($("#height").val()));
-            if(temp_height > 0){
-                $('.canvas-container').css({
-                    'position' :'absolute',
-                    'margin-top': temp_height+'px'
-                });
-            }
-            else{
-                $('.canvas-container').css({
-                    'position' :'relative',
-                    'margin-top': '0px'
-                });
-            }
-        }
-        else{
-            $('.canvas-container').css({
-                'position' :'relative',
-                'margin-top': '0px'
-            });
-        }
-    });
+        SizeSetup(width,height,divwidth,divheight);
+
+
+	});
 
 	$('#ratio').change(function(){ 
 		if($(this).is(':checked')){//If Ratio Checkbox clicked
@@ -208,7 +216,7 @@ $(document).ready(function(){
 			var height = $("#height").val();
 			ratio_HW = parseInt(height)/parseInt(width);
 			ratio_WH = parseInt(width)/parseInt(height);
-			console.log(ratio_HW, ratio_WH);
+			//console.log(ratio_HW, ratio_WH);
 			flag = 1;
 		}
 		else{
@@ -216,10 +224,12 @@ $(document).ready(function(){
 		}
 	});
     $("#Exportbtn").click(function(){
-        var ExportHeight = document.getElementById("NewWidthEx").value;
-        var ExportWidth = document.getElementById("NewHeightEx").value;
-        console.log(ExportHeight,ExportWidth);
-        prototypefabric.ExportImage(ExportWidth,ExportHeight);
+        var ExportHeight = document.getElementById("NewHeightEx").value;
+        var ExportWidth = document.getElementById("NewWidthEx").value;
+        var Width = parseInt($("#width").val());
+        var Height = parseInt($("#height").val());
+        //console.log(ExportHeight,ExportWidth);
+        prototypefabric.ExportImage(Width,Height,ExportWidth,ExportHeight);
     });
 
 	/***************************** AHMAD'S CODE END *****************************/
