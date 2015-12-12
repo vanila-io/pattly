@@ -1,98 +1,181 @@
+
 <!DOCTYPE html>
-  <html>
+ <html>
     <head>
-      <title>pattapp</title>
-      <!--Import Google Icon Font-->
-      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!-- font awesome -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-      <!-- Compiled and minified CSS -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+        <title>pattapp</title>
+        <!--Import Google Icon Font-->
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- font awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="css/materialize.min.css">
+    
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+        <!-- colorpicker -->
+        <!-- <link rel="stylesheet" type="text/css" href="css/colorpicker.css"> -->
+        <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:400,300italic,400italic,600italic,600,700,700italic' rel='stylesheet'  type='text/css'>
+        <link rel="stylesheet" type="text/css" href="css/jcolor.css">
+        <!-- Custom css -->
+        <link rel="stylesheet" type="text/css" href="css/custom.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.1/spectrum.min.css">
+        </head>
+        <body>
+        <div class="contWrapper">
+        <div class="bgImage">
+          
+    </div>
+    
+    <div class="mainCont">
+        <h1 id="pattlyid">pattly</h1>
+    
+        <!--<a href="#" data-activates="nav-mobile" class="button-collapse "><i class="mdi-navigation-menu"></i></a>-->
+      <div class="container" id = "main-container">
 
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-      <!-- colorpicker -->
-      <!-- <link rel="stylesheet" type="text/css" href="css/colorpicker.css">
- -->
-      <link rel="stylesheet" type="text/css" href="css/jcolor.css">
-      <!-- Custom css -->
-      <link rel="stylesheet" type="text/css" href="css/style.css">
-    </head>
- 
-    <body>
-      <div class="row col s12" style="height:100vh;">
-        <div class="col s2 sidenav">
-          <h5 class="center-align">pattapp</h5>
-          <ul>
-            <p class="left-align">Canvas Settings</p>
-            <p class="left-align mrgb">
-              <label>width</label>
-            <input id="width" type="text" class="ml8" value="500">
-            </p>
-            <span style="right: 67px;position: absolute;top: 188px;">
-              <label>ratio</label>
-              <input class="chkbx" type="checkbox" value="Car">
-            </span>
-            <p class="left-align mrgb">
-              <label>height</label>
-             <input id="height" type="text" value="500">
-            </p>
-            <p class="left-align mrgb">
+      <ul style="width: 240px;" id="nav-mobile" class="side-nav fixed collapsible" data-collapsible="accordion">
+            <li class="no-padding">
+            <div class="collapsible-header"><img src="img/dashboard.png" alt="" class="dash"><span >pattly</span></div>
+          </li>
+          <li class="no-padding">
+            <div class="collapsible-header"><img src="img/canvas.png" alt=""><span class="canvas">Canvas Settings</span></div>
+            <div class="collapsible-body">
+            <div class="input-field">
+            <input id="width" type="text" class="ml8" value="400">
+            <label class="active" for="width">Width</label>
+            </div>
+            <div class="input-field">
+             <input id="height" type="text" value="400">
+             <label class="active" for="height">Height</label>
+            </div>
+            <div class="input-field">
+            <input type="checkbox" id="ratio" class="chkbx"  value="Car">
+              <label for="ratio">Ratio</label>
+              </div>
+            <!--<p class="left-align mrgb">
               <label>bg Color</label>
               <div class="colorpickerHolderdiv my-color-picker"></div>
               <input id="colorpickerHolder" type="text" class="inps">
-            </p>
-        </ul>
-          <ul class="bg " style="text-align: center;">
-            <p class="left-align">Graphics</p>
-              <a id="browse" class="waves-effect waves-light btn">Browse</a>
-                    <input type="file" id="hidden-input" style="display:none;" multiple>
-                      <a id="addtext" class="waves-effect waves-light btn">Add TexT</a>
-                    <a id="browse1" class="waves-effect waves-light btn" style="display:none;margin-top:5px;">Browse Svg</a>
-                    <input type="file" id="hidden-input1" style="display:none;">
-                    <form action="#">
-                        <p class="range-field">
-                          <label>Opactiy</label>
-                          <input type="range" id="test5" min="0" max="100" />
-                        </p>
+            </p>-->
+                    <input id = "backgroundColorPicker" type='text' class="insp custom">
+            </div>
+          </li>
+          <li class="no-padding">
+            <div class="collapsible-header active"><img src="img/add.png" alt="" class="add"><span>Graphics</span></div>
+            <div class="collapsible-body">
+              <a id="browse" class="waves-effect waves-light btn btnBrowse">Upload icon</a>
+
+                <input type="file" id="hidden-input" style="display:none;">
+                <a id="browse1" class="waves-effect waves-light btn" style="display:none;margin-top:5px;">Browse Svg</a>
+                <input type="file" id="hidden-input1" style="display:none;">
+                    <form action="#" class="formGraphics">
+                        <div class="range-field">
+                            <label for="test5a">Opacity</label>
+                            <input type="range" id="test5a" min="0" max="100" />
+                        </div>
                     </form>
                     <a class="waves-effect waves-light btn" id="duplicate">Duplicate</a>
                     <a class="waves-effect waves-light btn" id="remove">Remove</a><br>
-                    <span id="export">Export</span>
-                    <div class="my-color-picker1" style="color: green;left: 20px;top:16px;"></div><br>
-                   
-          </ul>          
-   
+                    <input id = "imageColorPicker" type='text' class="insp custom">
+            </div>
+          </li>
+          <li class="no-padding">
+            <div class="collapsible-header active"><img src="img/add.png" alt="" class="add"><span>Text</span></div>
+            <div class="collapsible-body">
+              <a id="addtext" class="waves-effect waves-light btn  btnBrowse">Add Text</a>
+                  <form action="#" class="formText">
+                        <div class="range-field">
+                          <label for="test5b">Opacity</label>
+                          <input type="range" id="test5b" min="0" max="100">
+                        </div>
+                    </form>
+                    <a class="waves-effect waves-light btn" id="duplicateText">Duplicate</a>
+                    <a class="waves-effect waves-light btn" id="removeText">Remove</a><br>
+                    <span style="text-align: left;">
+                        <input id ="textColorPicker" type='text' class="insp custom" >
+                        <br/>
+                        <label class="active" for="ColorVal" size="50%">Color</label>
+                        <input id="ColorVal" type="text" value="">
+                    </span>
+            </div>
+          </li>
+        <li class="no-padding">
+
+            <!---------------------------------- AHMAD'S CODE ---------------------------------------->
+
+          <div class="collapsible-header"><img src="img/export.png" alt="" class="export"><span>Export</span></div>
+            <div class="collapsible-body">
+                <div class="input-field">
+                    <input id="NewWidthEx" type="text" value="500">
+                    <label class="active" for="NewWidthEx">Export Width</label>
+                </div>
+                <div class="input-field">
+                    <input id="NewHeightEx" type="text" value="500">
+                    <label class="active" for="NewHeightEx">Export Height</label>
+                </div>
+                <center>
+                    <div class="input-field">
+                        <div class="waves-effect waves-light btn" id="Exportbtn">Export</div>
+                    </div>
+                </center>
+            </div>
+
+            <!---------------------------------- ------------- ---------------------------------------->
+
+        </li>
+      </ul>
+        <div class="canvasBig">
+          <canvas id="myCanvas"></canvas>
         </div>
-        <div class="col s10 right canvasContainer">
-          <div class="col s12 canvasContainer" style="padding-top:100px;">
-            <canvas id="myCanvas"></canvas>
-          </div>
       </div>
+
+      </div>
+      
+    </div>
+
+
       <!--Import jQuery before materialize.js-->
-      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="js/materialize.min.js"></script>
+
+    <script type="text/javascript" src="js/jquery-ui.js"></script>
+    <!-- colorpicker -->
+    <script type="text/javascript" src="js/jcolor.js"></script>
+    <!-- fabric js -->
+    <script type="text/javascript" src="js/fabric.min.js"></script>
+    <script type="text/javascript" src="js/custom-fabric.js"></script>
+    
+    <script>
+        function fbs_click(TheImg) {
+            u=TheImg.src;
+             // t=document.title;
+            t=TheImg.getAttribute('alt');
+            window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;
+        }
+    </script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.1/spectrum.min.js"></script>
+
+    <script>
 
 
-      <!-- Compiled and minified JavaScript -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
-
-      <script type="text/javascript" src="js/jquery-ui.js"></script>
-      <!-- colorpicker -->
-      <script type="text/javascript" src="js/jcolor.js"></script>
-      <!-- fabric js -->
-      <script type="text/javascript" src="js/fabric.min.js"></script>
-      <script type="text/javascript" src="js/custom-fabric.js"></script>
-        
-                    <script>
-                          function fbs_click(TheImg) {
-                              u=TheImg.src;
-                               // t=document.title;
-                              t=TheImg.getAttribute('alt');
-                              window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;
-                          }
-                    </script>
-      <script type="text/javascript" src="js/script.js"></script>
+        $("#textColorPicker").spectrum({
+            color: "blue",
+            allowEmpty:true,
+            move: function(color) {
+                prototypefabric.setcolor(color.toHexString());
+                console.log("sdf");
+            }
+        });
+        $("#backgroundColorPicker").spectrum({
+            color: "blue",
+            allowEmpty:true,
+            move: function(color) {
+                prototypefabric.changeBackground(color.toHexString());
+            }
+        });
+    </script>
     </body>
-  </html>
-        
+</html>
