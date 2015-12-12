@@ -31,7 +31,7 @@
         <h1 id="pattlyid">pattly</h1>
     
         <!--<a href="#" data-activates="nav-mobile" class="button-collapse "><i class="mdi-navigation-menu"></i></a>-->
-      <div class="container">
+      <div class="container" id = "main-container">
 
       <ul style="width: 240px;" id="nav-mobile" class="side-nav fixed collapsible" data-collapsible="accordion">
             <li class="no-padding">
@@ -41,11 +41,11 @@
             <div class="collapsible-header"><img src="img/canvas.png" alt=""><span class="canvas">Canvas Settings</span></div>
             <div class="collapsible-body">
             <div class="input-field">
-            <input id="width" type="text" class="ml8" value="500">
+            <input id="width" type="text" class="ml8" value="400">
             <label class="active" for="width">Width</label>
             </div>
             <div class="input-field">
-             <input id="height" type="text" value="500">
+             <input id="height" type="text" value="400">
              <label class="active" for="height">Height</label>
             </div>
             <div class="input-field">
@@ -70,8 +70,8 @@
                 <input type="file" id="hidden-input1" style="display:none;">
                     <form action="#" class="formGraphics">
                         <div class="range-field">
-                            <label for="test5">Opacity</label>
-                            <input type="range" id="test5" min="0" max="100" oninput="showVal(this.value)" onchange="showVal(this.value)">
+                            <label for="test5a">Opacity</label>
+                            <input type="range" id="test5a" min="0" max="100" />
                         </div>
                     </form>
                     <a class="waves-effect waves-light btn" id="duplicate">Duplicate</a>
@@ -85,14 +85,18 @@
               <a id="addtext" class="waves-effect waves-light btn  btnBrowse">Add Text</a>
                   <form action="#" class="formText">
                         <div class="range-field">
-                          <label for="test5">Opacity</label>
-                          <input type="range" id="test5" min="0" max="100" oninput="showVal(this.value)" onchange="showVal(this.value)">
+                          <label for="test5b">Opacity</label>
+                          <input type="range" id="test5b" min="0" max="100">
                         </div>
                     </form>
                     <a class="waves-effect waves-light btn" id="duplicateText">Duplicate</a>
                     <a class="waves-effect waves-light btn" id="removeText">Remove</a><br>
-                    <input id ="textColorPicker" type='text' class="insp custom" >
-                    
+                    <span style="text-align: left;">
+                        <input id ="textColorPicker" type='text' class="insp custom" >
+                        <br/>
+                        <label class="active" for="ColorVal" size="50%">Color</label>
+                        <input id="ColorVal" type="text" value="">
+                    </span>
             </div>
           </li>
         <li class="no-padding">
@@ -155,12 +159,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.1/spectrum.min.js"></script>
 
     <script>
-    
+
+
         $("#textColorPicker").spectrum({
             color: "blue",
             allowEmpty:true,
             move: function(color) {
                 prototypefabric.setcolor(color.toHexString());
+                console.log("sdf");
             }
         });
         $("#backgroundColorPicker").spectrum({
@@ -168,7 +174,6 @@
             allowEmpty:true,
             move: function(color) {
                 prototypefabric.changeBackground(color.toHexString());
-             
             }
         });
     </script>

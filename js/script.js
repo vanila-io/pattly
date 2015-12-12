@@ -1,13 +1,24 @@
+var exportRatio = 0;
+var _color = "#0000ff";
 $(document).ready(function(){
-		/* find ratio of canvas */
+	/* find ratio of canvas */
+    var padding = 20;
 	var cw = $('.canvasContainer').width();
 	var ch = $('.canvasContainer').height();
-	
+    $("#ColorVal").val(_color);
+    var tempWidth = ($('#main-container').width())-$('#main-container>.side-nav').width();
+    var tempHeight = ($('#main-container').height());
+    SizeSetup(500,500,tempWidth,tempHeight);
 	var flag = 0;
 	var flagWd = 0;
 	var flagHt = 0;
 	var ratio_WH = 0;
 	var ratio_HW = 0;
+
+    /*$("#textColorPicker").spectrum({
+        color: _color
+    });*/
+
 	function calculateCanvasSize(original_width,original_height,type){
 	    var pageMaxHeight = $('.canvasarea').height();
 	    canvasWidth = original_width;
@@ -59,7 +70,7 @@ $(document).ready(function(){
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
   });
-	$("div.canvas-container").css({margin:"0 auto"});
+	//$("div.canvas-container").css({margin:"0 auto"});
 
 	$('#addtext').click(function(){
 		prototypefabric.addtext();
@@ -71,9 +82,15 @@ $(document).ready(function(){
 	$("#hidden-input,#hidden-input1").on('change', function(){
         readURL(this);
     });
-    $("#test5").change(function(){
-    	var opacity = $("#test5").val();
-    	prototypefabric.opacity(opacity);
+    $("#test5a").change(function(){
+        var opacity = $("#test5a").val();
+        console.log("HERE IN #test5a");
+        prototypefabric.opacity(opacity);
+    });
+    $("#test5b").change(function(){
+        var opacity = $("#test5b").val();
+        console.log("HERE IN #test5b");
+        prototypefabric.textopacity(opacity);
     });
     $("#duplicate").click(function(){
     	prototypefabric.duplicate();
@@ -91,7 +108,38 @@ $(document).ready(function(){
 	/***************************** AHMAD's CODE *****************************/
     function SizeSetup(width,height,divwidth,divheight)
     {
-        if(width >= height){
+        width = parseFloat(width);
+        height = parseFloat(height);
+        if(width > height){
+
+            var ratio = (divwidth-padding)/width;
+            exportRatio = ratio;
+            var newwidth = width * ratio;
+            var newheight = height * ratio;
+            prototypefabric.setobjectsize(newwidth, newheight);
+        }
+        else if(height > width){
+            var ratio = (divheight-padding)/height;
+            exportRatio = ratio;
+            var newwidth = width * ratio;
+            var newheight = height * ratio;
+            prototypefabric.setobjectsize(newwidth, newheight);
+        }
+        else{
+            var ratio = (divheight-padding)/height;
+            exportRatio = ratio;
+            var newwidth = width * ratio;
+            var newheight = height * ratio;
+            prototypefabric.setobjectsize(newwidth, newheight);
+        }
+        var mtop = Math.abs(newheight-divheight)/2;
+        var mleft = Math.abs(newwidth-divwidth)/2;
+        $('.canvas-container').css({
+            'position' :'absolute',
+            'margin-left': mleft,
+            'margin-top':mtop
+        });
+ /*       if(width >= height){
             if(width >= divwidth){
                 var r = divwidth / width;
                 width = parseInt(width * r);
@@ -169,14 +217,17 @@ $(document).ready(function(){
                 'position' :'absolute',
                 'margin-left': temp_width+'px'
             });
-        }
+        }*/
     }
 
 	$("#width,#height").keyup(function(){
 		var width  = $('#width').val();
 		var height = $('#height').val();
-		var divwidth = $('.canvasBig').width();
-		var divheight = $('.container').height();
+		//var divwidth = $('.canvasBig').width();
+		//var divheight = $('.container').height();
+
+        var divwidth = $('#main-container').width()-$('#main-container>.side-nav').width();
+        var divheight = $('#main-container').height();
 
         var chatinput = document.getElementById("width").value;
         if (chatinput == "" || chatinput.length == 0 || chatinput == null)//If Width equals Null Exit
@@ -230,6 +281,38 @@ $(document).ready(function(){
         var Height = parseInt($("#height").val());
         //console.log(ExportHeight,ExportWidth);
         prototypefabric.ExportImage(Width,Height,ExportWidth,ExportHeight);
+        var mtop = Math.abs($('#myCanvas').height()-$('#main-container').height())/2;
+        var mleft = Math.abs($('#myCanvas').width()-tempWidth)/2;
+        console.log('Here '+mtop+':'+mleft);
+        $('.canvas-container').css({
+            'position' :'absolute',
+            'margin-left': mleft,
+            'margin-top':mtop
+        });
+    });
+
+    $('#ColorVal').change(function(){
+        var col = $('#ColorVal').val();
+        if(_color!=col) {
+            prototypefabric.setcolor(col);
+            $("#textColorPicker").spectrum({
+                color: col
+            });
+
+            console.log("HERE");
+            _color = col;
+        }
+    });
+    $('#ColorVal').onmove(function(){
+        var col = $('#ColorVal').val();
+        if(_color!=col) {
+            prototypefabric.setcolor(col);
+            $("#textColorPicker").spectrum({
+                color: col
+            });
+            console.log("HERE");
+            _color = col;
+        }
     });
 
 	/***************************** AHMAD'S CODE END *****************************/
@@ -253,11 +336,12 @@ $(document).ready(function(){
 
     ColorPicker.on('newcolor', function (ev, colorpicker, component, value) {
         color = colorpicker.toCssString();
-        console.log(color);
+        console.log("asdfsd");
         prototypefabric.setcolor(color);
     });
     Colorpicker.on('newcolor', function(ev, colorpicker, component, value){
     	color = colorpicker.toCssString();
+        console.log("123");
     	portotypefabric.setcolor(color);
     });
     $("#").click(function(){

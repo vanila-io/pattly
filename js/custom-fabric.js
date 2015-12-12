@@ -3,6 +3,10 @@ var r = 0;
 var prototypefabric = new function(){
 	var canvas = new fabric.Canvas('myCanvas', { width: 400, height: 400, backgroundColor: '#0D1E2C'});
 	canvas.renderAll();
+    canvas.on('object:selected', function(o){
+        var object = o.target;
+        console.log(object);
+    });
 	this.addtext = function(){		
 		var text = new fabric.IText('hello world', { left: 100, top: 100,backgroundColor: 'transparent', textAlign : 'center' ,class: 'text'});
 		canvas.add(text);
@@ -45,26 +49,29 @@ var prototypefabric = new function(){
 
     this.ExportImage = function(width, height,ExportWidth,ExportHeight)
     {
-        if(width > height)
-        {
-            r = width/height;
-        }
-        else if (width < height)
-        {
-            r = height/width;
-        }
-        else {
-            r = 1;
-        }
-        console.log('Ratio : '+ratio+' Export Width : '+ExportWidth+' Export Height : '+ExportHeight);
-        var cw = Math.floor($('.canvasBig').width());
-        var ch = Math.floor($('.container').height());
-        //canvas.setHeight(ch*r);
-        //canvas.setWidth(cw*r);
-        //console.log("r : "+r+" cw : "+cw+" ch : "+ch);
+        var Twidth = canvas.width;
+        var Theight = canvas.height;
+        canvas.setWidth(width);
+        canvas.setHeight(height);
+        _exportRatio = 1/exportRatio;
+        alert(_exportRatio);
+        canvas.forEachObject(function(obj){
+            console.log(_exportRatio);
+            var tempWd = obj.width;
+            var tempHt = obj.height;
+            obj.scaleX = _exportRatio * obj.scaleX;
+            obj.scaleY = _exportRatio * obj.scaleY;
+            obj.top = _exportRatio * obj.top;
+            obj.left = _exportRatio * obj.left;
+            console.log('before '+obj.width+' ::: '+obj.height);
+        });
+        canvas.renderAll();
+        //console.log('Ratio : '+ratio+' Export Width : '+ExportWidth+' Export Height : '+ExportHeight);
+        console.log(exportRatio);//Use this ratio
         canvas.discardActiveGroup();
         canvas.discardActiveObject();
         var _base64 = canvas.toDataURL();
+        console.log(_base64);
         TempCanvas = window._tmpCanvas = new fabric.Canvas(fabric.util.createCanvasElement());
         TempCanvas.setWidth(ExportWidth);
         TempCanvas.setHeight(ExportHeight);
@@ -73,8 +80,22 @@ var prototypefabric = new function(){
             url = TempCanvas.toDataURL();
             window.open(url);
             window.focus();
+
+
         });
-        //prototypefabric.setobjectsize(width,height);
+        canvas.forEachObject(function(obj){
+            var tempWd = obj.width;
+            var tempHt = obj.height;
+            obj.scaleX =  obj.scaleX/_exportRatio;
+            obj.scaleY = obj.scaleY/_exportRatio;
+            obj.top = obj.top/_exportRatio;
+            obj.left = obj.left/_exportRatio;
+            console.log('After '+obj.width+' ::: '+obj.height);
+        });
+        canvas.setWidth(Twidth);
+        canvas.setHeight(Theight);
+        console.log(canvas);
+
     }
 
    
@@ -84,13 +105,13 @@ var prototypefabric = new function(){
 		fabric.Image.fromURL(source, function(img) {
 			img.class = 'image';
 			img.source = source;
-			img.width = 100;
-			img.height = 100;
+            img.id = "test";
+
 
 	        $("#imageColorPicker").spectrum({
 	            color: "blue",
 	            allowEmpty:true,
-	            change: function(color) {
+	            move: function(color) {
 	                var filter = new fabric.Image.filters.Tint({
 						color: color.toHexString(),
 						opacity: 1
@@ -110,9 +131,18 @@ var prototypefabric = new function(){
 	}
 	this.opacity = function(opacity){
 		var obj = canvas.getActiveObject();
-		obj.setOpacity(opacity/100);
+        if(obj.class=="image"){
+            obj.setOpacity(opacity/100);
+        }
 		canvas.renderAll();
 	}
+    this.textopacity = function(opacity){
+        var obj = canvas.getActiveObject();
+        if(obj.class=="text"){
+            obj.setOpacity(opacity/100);
+        }
+        canvas.renderAll();
+    }
 	this.canvasExport = function(){
 		console.log(JSON.parse(decodeURIComponent(JSON.stringify(canvas))));
 		canvas.renderAll();
@@ -131,19 +161,19 @@ var prototypefabric = new function(){
                 //original_scaleY: clone.get('scaleY'),
                 //original_left: clone.get('left') + 10,
                 //original_top: clone.get('top') + 10,
-                lockScalingX: true,
-                lockScalingY: true,
                 hasControls: true,
                 angle:obj.angle,
                 fill:obj.fill,
                 scaleY:obj.scaleY,
                 scaleX:obj.scaleX
             });
+            //clone.color = _color;
             canvas.add(clone);
             canvas.setActiveObject(clone);
             canvas.renderAll();
         }
         else if(obj.class == "image"){
+            console.log(obj);
 			fabric.Image.fromURL(obj.source, function(img) {
 	            img.set({
 	                top: obj.get('top') + 10,
@@ -153,8 +183,6 @@ var prototypefabric = new function(){
 	                //original_scaleY: img.get('scaleY'),
 	                //original_left: img.get('left') + 10,
 	                //original_top: img.get('top') + 10,
-	                lockScalingX: true,
-	                lockScalingY: true,
 	                hasControls: true,
 	                angle:obj.angle,
 	                fill:obj.fill,
@@ -168,18 +196,32 @@ var prototypefabric = new function(){
 	        canvas.renderAll();
 		}
 	}
-	this.setcolor = function(color){
+	this.setcolor = function(color) {//Latest Modified
+      $("#ColorVal").val(color);
 		var obj = canvas.getActiveObject();
 		obj.setColor(color);
 		canvas.renderAll();
 	}
-	this.removeObj =function (){
+	this.removeObj =function (){//Latest Modified
 		var obj = canvas.getActiveObject();
-		obj.remove();
-		canvas.renderAll();
+        if(obj == null){
+            obj = canvas.getActiveGroup();
+            for(var i = 0 ; i < obj._objects.length ; i++) {
+                console.log(obj._objects[i]);
+                canvas.fxRemove(obj._objects[i]);
+            }
+            canvas.discardActiveGroup();
+            canvas.renderAll();
+        }
+        else{
+            canvas.fxRemove(obj);
+            canvas.renderAll();
+        }
+        canvas.renderAll();
 	}
 
 	this.tint = function(color){
+        alert('asd');
 		var obj = canvas.getActiveObject();
 		var filter = new fabric.Image.filters.Tint({
 			color: color,
@@ -191,3 +233,5 @@ var prototypefabric = new function(){
 	}
 	canvas.renderAll();
 }
+
+
