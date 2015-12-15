@@ -1,4 +1,3 @@
-var exportRatio = 0;
 var _color = "#0000ff";
 var _ImgColor = "#0000ff";
 $(document).ready(function(){
@@ -9,7 +8,7 @@ $(document).ready(function(){
     $("#ColorVal").val(_color);
     var tempWidth = ($('#main-container').width())-$('#main-container>.side-nav').width();
     var tempHeight = ($('#main-container').height());
-    SizeSetup(500,500,tempWidth,tempHeight);
+    SizeSetup(200,200,tempWidth,tempHeight);
 	var flag = 0;
 	var flagWd = 0;
 	var flagHt = 0;
@@ -21,30 +20,7 @@ $(document).ready(function(){
         color: _color
     });*/
 
-	function calculateCanvasSize(original_width,original_height,type){
-	    var pageMaxHeight = $('.canvasarea').height();
-	    canvasWidth = original_width;
-	    canvasHeight = original_height;
-	    canvasSizeType = type;
-	    mul = (type == 'inches' ? 96 : 1152);
-	    sign = (type == 'inches' ? '"' : "'");
-	    if (original_width > 0 && original_height > 0) {
-	        width = original_width * mul;
-	        height = original_height * mul;
-	        _wid = $('.canvasarea').width() / width;
-	        width = width * _wid;
-	        height = height * _wid;
-	        if(height > pageMaxHeight)
-	        {
-	            ratio = pageMaxHeight/height;
-	            width = width*ratio;
-	            height = height*ratio;
-	        }
-	        $('.canvasarea').css('padding-top',($('.canvasarea').height()-height)/2);
-	        prototypefabric.setCanvasSize(width, height,original_width,original_height,type);
-	        $('div#canvasSizeText').html(original_width + sign + 'x' + original_height + sign);
-	    }
-    }
+
 	/* get file type source */
 	var readURL = function(input) {
         if (input.files && input.files[0]) {
@@ -52,9 +28,6 @@ $(document).ready(function(){
             reader.onload = function (e) {
                	prototypefabric.addImage(e.target.result);
                 setTimeout(function(){
-                    /*popups.imagepopup.update(prototypefabric.getCurrentObject());
-                    popups.imagepopup.show();
-                    popups.imagepopupResponsive.show();*/
                     $(".file-upload").val('');
                 },1000);
             }
@@ -62,7 +35,6 @@ $(document).ready(function(){
         }
     }
 
-	  // Initialize collapse button
   $(".button-collapse").sideNav();
   // Initialize collapsible (uncomment the line below if you use the dropdown variation)
   //$('.collapsible').collapsible();
@@ -110,32 +82,9 @@ $(document).ready(function(){
 	/***************************** AHMAD's CODE *****************************/
     function SizeSetup(width,height,divwidth,divheight)
     {
-        width = parseFloat(width);
-        height = parseFloat(height);
-        if(width > height){
-
-            var ratio = (divwidth-padding)/width;
-            exportRatio = ratio;
-            var newwidth = width * ratio;
-            var newheight = height * ratio;
-            prototypefabric.setobjectsize(newwidth, newheight);
-        }
-        else if(height > width){
-            var ratio = (divheight-padding)/height;
-            exportRatio = ratio;
-            var newwidth = width * ratio;
-            var newheight = height * ratio;
-            prototypefabric.setobjectsize(newwidth, newheight);
-        }
-        else{
-            var ratio = (divheight-padding)/height;
-            exportRatio = ratio;
-            var newwidth = width * ratio;
-            var newheight = height * ratio;
-            prototypefabric.setobjectsize(newwidth, newheight);
-        }
-        var mtop = Math.abs(newheight-divheight)/2;
-        var mleft = Math.abs(newwidth-divwidth)/2;
+        prototypefabric.setobjectsize(width, height);
+        var mtop = Math.abs(height-divheight)/2;
+        var mleft = Math.abs(width-divwidth)/2;
         $('.canvas-container').css({
             'position' :'absolute',
             'margin-left': mleft,
@@ -209,42 +158,17 @@ $(document).ready(function(){
 	$("#width,#height").keyup(function(){
 		var width  = $('#width').val();
 		var height = $('#height').val();
-		//var divwidth = $('.canvasBig').width();
-		//var divheight = $('.container').height();
-
+        if(width > 400){
+            $('#width').val('400');
+            width = 400;
+        }
+        if(height > 400){
+            $('#height').val('400');
+            height = 400;
+        }
         var divwidth = $('#main-container').width()-$('#main-container>.side-nav').width();
         var divheight = $('#main-container').height();
-
-        var chatinput = document.getElementById("width").value;
-        if (chatinput == "" || chatinput.length == 0 || chatinput == null)//If Width equals Null Exit
-        {
-            return;
-        }
-        chatinput = document.getElementById("height").value;
-        if (chatinput == "" || chatinput.length == 0 || chatinput == null)//If Height equals Null Exit
-        {
-            return;
-        }
-        if(flag == 1){
-            if($(this).attr('id') == 'width'){// Check if width has been changed
-                var Temp_width = parseInt($("#width").val());
-                var Temp_height = Temp_width * (ratio_HW);//Height will change accordingly
-                $('#height').val(parseInt(Temp_height));
-                SizeSetup(width,parseInt(Temp_height),divwidth,divheight);
-            }
-            if($(this).attr('id') == 'height'){// Check if height has been changed
-                console.log();
-                var Temp_height = parseInt($("#height").val());
-                var Temp_width = Temp_height * (ratio_WH);//Width will change accordingly
-                $('#width').val(parseInt(Temp_width));
-                SizeSetup(parseInt(Temp_width),height,divwidth,divheight);
-            }
-            return;
-        }
-        //console.log('asd');
         SizeSetup(width,height,divwidth,divheight);
-
-
 	});
 
 	$('#ratio').change(function(){ 

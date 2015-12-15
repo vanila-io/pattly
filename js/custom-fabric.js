@@ -116,25 +116,6 @@ var prototypefabric = new function(){
 
     this.ExportImage = function(width, height,ExportWidth,ExportHeight)
     {
-        var Twidth = canvas.width;
-        var Theight = canvas.height;
-        canvas.setWidth(width);
-        canvas.setHeight(height);
-        _exportRatio = 1/exportRatio;
-        alert(_exportRatio);
-        canvas.forEachObject(function(obj){
-            console.log(_exportRatio);
-            var tempWd = obj.width;
-            var tempHt = obj.height;
-            obj.scaleX = _exportRatio * obj.scaleX;
-            obj.scaleY = _exportRatio * obj.scaleY;
-            obj.top = _exportRatio * obj.top;
-            obj.left = _exportRatio * obj.left;
-            console.log('before '+obj.width+' ::: '+obj.height);
-        });
-        canvas.renderAll();
-        //console.log('Ratio : '+ratio+' Export Width : '+ExportWidth+' Export Height : '+ExportHeight);
-        console.log(exportRatio);//Use this ratio
         canvas.discardActiveGroup();
         canvas.discardActiveObject();
         var _base64 = canvas.toDataURL();
@@ -147,22 +128,7 @@ var prototypefabric = new function(){
             url = TempCanvas.toDataURL();
             window.open(url);
             window.focus();
-
-
         });
-        canvas.forEachObject(function(obj){
-            var tempWd = obj.width;
-            var tempHt = obj.height;
-            obj.scaleX =  obj.scaleX/_exportRatio;
-            obj.scaleY = obj.scaleY/_exportRatio;
-            obj.top = obj.top/_exportRatio;
-            obj.left = obj.left/_exportRatio;
-            console.log('After '+obj.width+' ::: '+obj.height);
-        });
-        canvas.setWidth(Twidth);
-        canvas.setHeight(Theight);
-        console.log(canvas);
-
     }
 
    
