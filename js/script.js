@@ -1,5 +1,6 @@
 var exportRatio = 0;
 var _color = "#0000ff";
+var _ImgColor = "#0000ff";
 $(document).ready(function(){
 	/* find ratio of canvas */
     var padding = 20;
@@ -15,6 +16,7 @@ $(document).ready(function(){
 	var ratio_WH = 0;
 	var ratio_HW = 0;
 
+    $("#ImgColorVal").val("#0000FF");
     /*$("#textColorPicker").spectrum({
         color: _color
     });*/
@@ -139,86 +141,70 @@ $(document).ready(function(){
             'margin-left': mleft,
             'margin-top':mtop
         });
- /*       if(width >= height){
-            if(width >= divwidth){
-                var r = divwidth / width;
-                width = parseInt(width * r);
-                height = parseInt(height * r);
-                if(height>divheight) {
-                    //console.log('Height Here ::: '+height);
-                    height = parseInt(divheight - 1);
-                }
-            }
-            else{
-                if(height >= divheight){
-                    var r = divheight / height ;
-                    width = parseInt(width * r);
-                    height = parseInt(height * r);
-                }
-            }
-        }
-        else{
-            if(height >= divheight){
-                var r = divheight / height;
-                width = parseInt(width * r);
-                height = parseInt(height * r);
-                if(width>divwidth)
-                {
-                    //console.log('Height Here ::: '+width);
-                    width = parseInt(divwidth-1);
-                }
-            }
-            else{
-                if(width >= divwidth){
-                    var r = divwidth / width;
-                    width = parseInt(width * r);
-                    height = parseInt(height * r);
-                }
-            }
-        }
-        //console.log('Width : '+width+' Height : '+height+' Canvas Width : '+divwidth+' Canvas Height : '+divheight);
-        prototypefabric.setobjectsize(width, height);
-        if(width<divwidth)
+    }
+    var map = [];
+    $(window).bind('keydown', function(e) {
+
+        map[e.keyCode] = e.type;
+        console.log(map);
+        if(e.keyCode == 46)
         {
-            var temp_width = parseInt((divwidth-width)/2);
-            //console.log('Width Center ::: '+temp_width+' Width Big Canvas : '+divwidth+' Width Canvas : '+width);
-            $('.canvas-container').css({
-                'position' :'absolute',
-                'margin-left': temp_width+'px'
-            });
+            prototypefabric.removeObj();
+            return;
         }
-        if(height<divheight) {
-            var cn_height = $(".canvas-container").height();
-            var c_height = $('.container').height();
-            var temp_height =  parseInt((c_height - cn_height)/2);
-            //console.log('Height Center ::: '+temp_height);
-            $('.canvas-container').css({
-                'position' :'absolute',
-                'margin-top': temp_height+'px'
-            });
-        }
-        if((height+divheight)>divheight)
+        if(map[17] && map[38]&&map[16])//Rotate Top to down with increment of 10
         {
-            var cn_height = $(".canvas-container").height();
-            var c_height = $('.container').height();
-            var temp_height =  parseInt((c_height - cn_height)/2);
-            //console.log('Height Center ::: '+temp_height);
-            $('.canvas-container').css({
-                'position' :'absolute',
-                'margin-top': temp_height+'px'
-            });
+            prototypefabric.angle_top_down(1,50);
+            return;
+        }
+        else if(map[17] && map[40]&&map[16])//Rotate Down to top with increment of 10
+        {
+            prototypefabric.angle_top_down(0,50);
+        }
+        else if (map[17] && map[38]) { //Rotate Top to down with increment of 1
+            prototypefabric.angle_top_down(1,1);
+
+        }
+        else if (map[17] && map[40]) {//Rotate Down to top with increment of 1
+            prototypefabric.angle_top_down(0,1);
+
+        }
+        else if(map[16] && map[38] )//top with increment of 10
+        {
+            prototypefabric.keyboard_Movement(0, 10, 0, 0);
+        }
+        else if(map[16] && map[40] )//down with increment of 10
+        {
+            prototypefabric.keyboard_Movement(10, 0, 0, 0);
+        }
+        else if(map[16] && map[39] )//right with increment of 10
+        {
+            prototypefabric.keyboard_Movement(0, 0, 10, 0);
+        }
+        else if(map[16] && map[37] )//left with increment of 10
+        {
+            prototypefabric.keyboard_Movement(0, 0, 0, 10);
+        }
+        else {
+            if (e.keyCode == 37) {//************* Key LEFT
+                prototypefabric.keyboard_Movement(0, 0, 0, 1);
+                //console.log('left');
+            } else if (e.keyCode == 38) {//************* UP
+                prototypefabric.keyboard_Movement(0, 1, 0, 0);
+                console.log('up');
+            } else if (e.keyCode == 39) {
+                prototypefabric.keyboard_Movement(0, 0, 1, 0);
+                console.log('right');
+            } else if (e.keyCode == 40) {
+                prototypefabric.keyboard_Movement(1, 0, 0, 0);
+                console.log('down');
+            }
         }
 
-        if((width+divwidth)>divwidth)
-        {
-            var temp_width = parseInt((divwidth-width)/2);
-            //console.log('Width Center ::: '+temp_width+' Width Big Canvas : '+divwidth+' Width Canvas : '+width);
-            $('.canvas-container').css({
-                'position' :'absolute',
-                'margin-left': temp_width+'px'
-            });
-        }*/
-    }
+    });
+    $(window).bind('keyup', function(e){
+        map = [];
+    });
 
 	$("#width,#height").keyup(function(){
 		var width  = $('#width').val();
@@ -291,6 +277,43 @@ $(document).ready(function(){
         });
     });
 
+    $('#ImgColorVal').change(function(){
+        //_ImgColor
+        var col = $('#ImgColorVal').val();
+        if(_ImgColor!=col) {
+            $("#imageColorPicker").spectrum({
+                color:col,
+                allowEmpty:true,
+                move: function(color) {
+                    prototypefabric.setImgcolor(color.toHexString());
+                }
+            });
+            prototypefabric.setImgcolor(col);
+            console.log("HERE");
+            _ImgColor = col;
+        }
+    });
+    $("#imageColorPicker").spectrum({
+        color: "blue",
+        allowEmpty:true,
+        move: function(color) {
+            prototypefabric.setImgcolor(color.toHexString());
+        }
+    });
+    
+    /*$('#ImgColorVal').onmove(function(){
+        //_ImgColor
+        var col = $('#ImgColorVal').val();
+        if(_ImgColor!=col) {
+            prototypefabric.setcolor(col);
+            $("#imageColorPicker").spectrum({
+                color: col
+            });
+
+            console.log("HERE");
+            _ImgColor = col;
+        }
+    });*/
     $('#ColorVal').change(function(){
         var col = $('#ColorVal').val();
         if(_color!=col) {

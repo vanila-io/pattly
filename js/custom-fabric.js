@@ -5,10 +5,32 @@ var prototypefabric = new function(){
 	canvas.renderAll();
     canvas.on('object:selected', function(o){
         var object = o.target;
+        /*$("#imageColorPicker").spectrum({
+            color: "blue",
+            allowEmpty:true,
+            move: function(color) {
+                var filter = new fabric.Image.filters.Tint({
+                    color: color.toHexString(),
+                    opacity: 1
+                });
+                object.filters[0]=filter;
+                object.applyFilters(canvas.renderAll.bind(canvas));
+            }
+        });*/
+        $("#ImgColorVal").val();
         console.log(object);
     });
+
 	this.addtext = function(){		
-		var text = new fabric.IText('hello world', { left: 100, top: 100,backgroundColor: 'transparent', textAlign : 'center' ,class: 'text'});
+		var text = new fabric.IText('hello world', {
+            left: 100,
+            top: 100,
+            backgroundColor: 'transparent',
+            textAlign : 'center' ,
+            class: 'text',
+            originX : "center",
+            originY : "center"
+        });
 		canvas.add(text);
 		canvas.renderAll();
 	}
@@ -30,14 +52,47 @@ var prototypefabric = new function(){
 	}
 	
 	/******************************* AHMAD'S CODE *******************************/
-	
+
+    this.angle_top_down = function(_flag,val){
+        var obj = canvas.getActiveObject();
+        if(obj) {
+            if(_flag == 1)
+            {
+            obj.angle = obj.angle + val;
+            }
+            else
+            {
+                obj.angle = obj.angle - val;
+            }
+        }
+        else
+        {
+            obj = canvas.getActiveObject();
+            if(obj) {
+                if (_flag == 1) {
+                    for(var i = 0 ; i < obj._objects.length ; i++) {
+                        obj._objects[i].angle = obj._objects[i].angle + val;
+                    }
+                }
+                else {
+                    for(var i = 0 ; i < obj._objects.length ; i++) {
+                        obj._objects[i].angle = obj._objects[i].angle - val;
+                    }
+                }
+            }
+        }
+        canvas.renderAll();
+    }
+
 	this.setobjectsize = function(width, height)
     {
         //console.log('Recieved width : '+width+' Height : '+height);
-		canvas.setHeight(height);
-		canvas.setWidth(width);
-		canvas.renderAll();
-	}
+        canvas.setHeight(height);
+        canvas.setWidth(width);
+        canvas.renderAll();
+    }
+
+
 
 	this.calGcd = function (a, b) {
 		if (b) {
@@ -46,6 +101,18 @@ var prototypefabric = new function(){
 			return Math.abs(a);
 		}
 	}
+
+    this.keyboard_Movement = function(Up, Down, Right, Left)
+    {
+        var obj = canvas.getActiveObject();
+        if(obj) {
+            obj.top = obj.top + Up;
+            obj.top = obj.top - Down;
+            obj.left = obj.left - Left;
+            obj.left = obj.left + Right;
+            canvas.renderAll();
+        }
+    }
 
     this.ExportImage = function(width, height,ExportWidth,ExportHeight)
     {
@@ -102,25 +169,17 @@ var prototypefabric = new function(){
 	/******************************* AHMAD'S CODE END *******************************/
 	
 	this.addImage = function(source){
-		fabric.Image.fromURL(source, function(img) {
+        var Left = canvas.width/2;
+        var Top = canvas.height/2;
+        	fabric.Image.fromURL(source, function(img) {
 			img.class = 'image';
 			img.source = source;
             img.id = "test";
-
-
-	        $("#imageColorPicker").spectrum({
-	            color: "blue",
-	            allowEmpty:true,
-	            move: function(color) {
-	                var filter = new fabric.Image.filters.Tint({
-						color: color.toHexString(),
-						opacity: 1
-					});
-					img.filters.push(filter);
-					img.applyFilters(canvas.renderAll.bind(canvas));
-	            }
-	        });
-			
+            img.originX = "center";
+            img.originY = "center";
+            img.top = Top;
+            img.left = Left;
+            console.log(img.width);
 			canvas.add(img);
 		});
 	}
@@ -174,6 +233,7 @@ var prototypefabric = new function(){
         }
         else if(obj.class == "image"){
             console.log(obj);
+            var col =  obj.filters[0].color;
 			fabric.Image.fromURL(obj.source, function(img) {
 	            img.set({
 	                top: obj.get('top') + 10,
@@ -190,18 +250,39 @@ var prototypefabric = new function(){
 	                scaleX:obj.scaleX,
 	                opacity:obj.opacity
 	            });
-			  	canvas.add(img);
+                var filter = new fabric.Image.filters.Tint({
+                    color: col,
+                    opacity: 1
+                });
+                img.filters[0]=filter;
+                img.applyFilters(canvas.renderAll.bind(canvas));
+                console.log(img);
+
+                canvas.add(img);
 			  	canvas.renderAll();
 	        });
 	        canvas.renderAll();
 		}
 	}
 	this.setcolor = function(color) {//Latest Modified
+        console.log('--== >> '+color);
       $("#ColorVal").val(color);
 		var obj = canvas.getActiveObject();
 		obj.setColor(color);
 		canvas.renderAll();
 	}
+
+    this.setImgcolor = function(color) {//Latest Modified
+        var object = canvas.getActiveObject();
+        var filter = new fabric.Image.filters.Tint({
+            color: color,
+            opacity: 1
+        });
+        object.filters[0]=filter;
+        object.applyFilters(canvas.renderAll.bind(canvas));
+
+    }
+
 	this.removeObj =function (){//Latest Modified
 		var obj = canvas.getActiveObject();
         if(obj == null){
