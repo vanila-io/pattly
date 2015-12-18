@@ -1,19 +1,59 @@
+var _gridFlag = 0;
 var _color = "#0000ff";
 var _ImgColor = "#0000ff";
+var _gridSize = 20;
+var _gridColor = "#9898a1";
 $(document).ready(function(){
 	/* find ratio of canvas */
+
     var padding = 20;
 	var cw = $('.canvasContainer').width();
 	var ch = $('.canvasContainer').height();
     $("#ColorVal").val(_color);
     var tempWidth = ($('#main-container').width())-$('#main-container>.side-nav').width();
     var tempHeight = ($('#main-container').height());
-    SizeSetup(200,200,tempWidth,tempHeight);
+    SizeSetup(400,400,tempWidth,tempHeight);
 	var flag = 0;
 	var flagWd = 0;
 	var flagHt = 0;
 	var ratio_WH = 0;
 	var ratio_HW = 0;
+
+    //
+    var _GoogleFontApiLink = "";
+    var _Fonts = "http://fonts.googleapis.com/css?family=Open";
+    var _FontArray = ['Open Sans',
+                    'Roboto',
+                    'Lato',
+                    'Oswald',
+                    'Lora',
+                    'Source Sans Pro',
+                    'Montserrat',
+                    'Raleway',
+                    'Ubuntu',
+                    'Droid Serif',
+                    'Merriweather',
+                    'Indie Flower',
+                    'Titillium Web',
+                    'Poiret One',
+                    'Oxygen',
+                    'Yanone Kaffeesatz',
+                    'Lobster',
+                    'Playfair Display',
+                    'Fjalla One',
+                    'Inconsolata'];
+
+     console.log(_FontArray.length);
+                    
+    for(var i=0;i<_FontArray.length;i++)
+    {
+        $('#txtfont').append($('<option>', {
+            value: _FontArray[i],
+            text: _FontArray[i]
+        }));
+    }
+
+    $('select').material_select();
 
     $("#ImgColorVal").val("#0000FF");
     /*$("#textColorPicker").spectrum({
@@ -23,15 +63,19 @@ $(document).ready(function(){
 
 	/* get file type source */
 	var readURL = function(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-               	prototypefabric.addImage(e.target.result);
-                setTimeout(function(){
-                    $(".file-upload").val('');
-                },1000);
+        console.log(input.files);
+        for(var i=0;i<input.files.length;i++)
+        {
+            if (input.files && input.files[i]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                   	prototypefabric.addImage(e.target.result);
+                    setTimeout(function(){
+                        $(".file-upload").val('');
+                    },1000);
+                }
+                reader.readAsDataURL(input.files[i]);
             }
-            reader.readAsDataURL(input.files[0]);
         }
     }
 
@@ -46,15 +90,32 @@ $(document).ready(function(){
   });
 	//$("div.canvas-container").css({margin:"0 auto"});
 
-	$('#addtext').click(function(){
-		prototypefabric.addtext();
+    $('#addtext').click(function(){
+        var _txtfontSelected = $( "#txtfont option:selected" ).val();
+        prototypefabric.addtext(_txtfontSelected);
+    });
+
+	$('#ObjToGrid').click(function(){
+        this.SnapObjToGrid(); 
 	});
+
+    $('#txtfont').change(function() {
+        var _txtfontSelected = $( "#txtfont option:selected" ).val();
+        prototypefabric.changeTextFont(_txtfontSelected);
+    });
+
+
+    /*$('#addtext').click(function(){
+        var _txtfontSelected = $( "#txtfont option:selected" ).val();
+        prototypefabric.addtext(_txtfontSelected);
+    });*/
 	/* browse / browse Svg*/
 	$('#browse,#browse1').click(function(){
 		$("#hidden-input").trigger('click');
 	});
 	$("#hidden-input,#hidden-input1").on('change', function(){
         readURL(this);
+        $("#hidden-input,#hidden-input1").val("");
     });
     $("#test5a").change(function(){
         var opacity = $("#test5a").val();
@@ -92,8 +153,9 @@ $(document).ready(function(){
         });
     }
     var map = [];
+    var keycheck = false;
     $(window).bind('keydown', function(e) {
-
+        var keycheck = true;
         map[e.keyCode] = e.type;
         console.log(map);
         if(e.keyCode == 46)
@@ -135,24 +197,47 @@ $(document).ready(function(){
             prototypefabric.keyboard_Movement(0, 0, 0, 10);
         }
         else {
-            if (e.keyCode == 37) {//************* Key LEFT
-                prototypefabric.keyboard_Movement(0, 0, 0, 1);
-                //console.log('left');
-            } else if (e.keyCode == 38) {//************* UP
-                prototypefabric.keyboard_Movement(0, 1, 0, 0);
-                console.log('up');
-            } else if (e.keyCode == 39) {
-                prototypefabric.keyboard_Movement(0, 0, 1, 0);
-                console.log('right');
-            } else if (e.keyCode == 40) {
-                prototypefabric.keyboard_Movement(1, 0, 0, 0);
-                console.log('down');
+            if(_gridFlag==0)
+            {
+                if (e.keyCode == 37) {//************* Key LEFT
+                    prototypefabric.keyboard_Movement(0, 0, 0, 1);
+                    //console.log('left');
+                } else if (e.keyCode == 38) {//************* UP
+                    prototypefabric.keyboard_Movement(0, 1, 0, 0);
+                    console.log('up');
+                } else if (e.keyCode == 39) {
+                    prototypefabric.keyboard_Movement(0, 0, 1, 0);
+                    console.log('right');
+                } else if (e.keyCode == 40) {
+                    prototypefabric.keyboard_Movement(1, 0, 0, 0);
+                    console.log('down');
+                }
+            }
+            else
+            {
+                if (e.keyCode == 37) {//************* Key LEFT
+                    prototypefabric.keyboard_Movement(0, 0, 0, _gridSize);
+                    //console.log('left');
+                } else if (e.keyCode == 38) {//************* UP
+                    prototypefabric.keyboard_Movement(0, _gridSize, 0, 0);
+                    console.log('up');
+                } else if (e.keyCode == 39) {
+                    prototypefabric.keyboard_Movement(0, 0, _gridSize, 0);
+                    console.log('right');
+                } else if (e.keyCode == 40) {
+                    prototypefabric.keyboard_Movement(_gridSize, 0, 0, 0);
+                    console.log('down');
+                }
             }
         }
 
     });
+
     $(window).bind('keyup', function(e){
-        map = [];
+        console.log(e);
+        if(!keycheck)
+            map = [];
+        keycheck = false;
     });
 
 	$("#width,#height").keyup(function(){
@@ -199,6 +284,19 @@ $(document).ready(function(){
             'margin-left': mleft,
             'margin-top':mtop
         });
+    });
+
+    $("#Gridbtn").click(function(){
+        if(_gridFlag==0)
+        {
+            prototypefabric.makeGrid();
+            _gridFlag = 1;
+        }
+        else if(_gridFlag==1)
+        {
+            prototypefabric.removeGrid();
+            _gridFlag = 0;
+        }
     });
 
     $('#ImgColorVal').change(function(){

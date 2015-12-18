@@ -3,25 +3,26 @@ var r = 0;
 var prototypefabric = new function(){
 	var canvas = new fabric.Canvas('myCanvas', { width: 400, height: 400, backgroundColor: '#0D1E2C'});
 	canvas.renderAll();
+    console.log(_gridFlag);
+    
+        canvas.on('object:moving', function(options) { 
+            if(_gridFlag==1)
+            {
+              options.target.set({
+                left: Math.round(options.target.left / _gridSize) * _gridSize,
+                top: Math.round(options.target.top / _gridSize) * _gridSize
+              });
+            }
+        });
+
     canvas.on('object:selected', function(o){
         var object = o.target;
-        /*$("#imageColorPicker").spectrum({
-            color: "blue",
-            allowEmpty:true,
-            move: function(color) {
-                var filter = new fabric.Image.filters.Tint({
-                    color: color.toHexString(),
-                    opacity: 1
-                });
-                object.filters[0]=filter;
-                object.applyFilters(canvas.renderAll.bind(canvas));
-            }
-        });*/
         $("#ImgColorVal").val();
         console.log(object);
+
     });
 
-	this.addtext = function(){		
+	this.addtext = function(_txtfontSelected){		
 		var text = new fabric.IText('hello world', {
             left: 100,
             top: 100,
@@ -29,11 +30,31 @@ var prototypefabric = new function(){
             textAlign : 'center' ,
             class: 'text',
             originX : "center",
-            originY : "center"
+            originY : "center",
+            fontFamily : _txtfontSelected
         });
+        console.log(text);
 		canvas.add(text);
 		canvas.renderAll();
 	}
+    
+    this.changeTextFont = function(_txtfontSelected){
+        var obj = canvas.getActiveObject();
+        if(obj && obj.class=="text"){
+            obj.fontFamily = _txtfontSelected;
+        }
+        else
+        {
+            obj = canvas.getActiveGroup();
+            if(obj) {
+                for (var i = 0; i < obj._objects.length; i++) {
+                    obj._objects[i].fontFamily = _txtfontSelected;
+                }
+            }
+        }
+        canvas.renderAll();
+    }
+
 	this.setCanvasWidth = function(width, height){
 		if( width > height ){
 			r = height/width;
@@ -86,7 +107,6 @@ var prototypefabric = new function(){
 
 	this.setobjectsize = function(width, height)
     {
-        //console.log('Recieved width : '+width+' Height : '+height);
         canvas.setHeight(height);
         canvas.setWidth(width);
         canvas.renderAll();
@@ -134,6 +154,60 @@ var prototypefabric = new function(){
    
 	/******************************* AHMAD'S CODE END *******************************/
 	
+    this.removeGrid = function (){
+        canvas.forEachObject(function(obj){
+            if(obj.class=="grid")
+            {
+                obj.remove();
+            }
+        });
+    }
+
+    this.makeGrid = function () {
+        this.removeGrid();
+        var CanvasSize = canvas.width;
+        var LoopLength = CanvasSize/_gridSize;
+        console.log('Grid Start');
+        for(var i = 1; i <= LoopLength; i++) {
+            var StartX=0;
+            var StartY=_gridSize*i;
+            var EndX=canvas.width;
+            var EndY=_gridSize*i;
+            var line = new fabric.Line([StartX, StartY, EndX, EndY], {
+                stroke: _gridColor,
+                strokeWidth: 0.3,
+                hasControls: false,
+                hasRotatingPoint: false,
+                selectable:false,
+                class:'grid'
+            });
+            canvas.add(line);
+            canvas.sendBackwards(line);
+            //canvas.sendToBack(line);
+            console.log('Inside Grid');
+        }
+
+        for(var i = 1; i <= LoopLength; i++) {
+            var StartX=_gridSize*i;
+            var StartY=0;
+            var EndX=_gridSize*i;
+            var EndY=canvas.height;
+            var line = new fabric.Line([StartX, StartY, EndX, EndY], {
+                stroke: _gridColor,
+                strokeWidth: 0.3,
+                hasControls: false,
+                hasRotatingPoint: false,
+                selectable:false,
+                class:'grid'
+            });
+            canvas.add(line);
+            canvas.sendBackwards(line);
+            //canvas.sendToBack(line);
+            console.log('Inside Grid');
+        }
+        console.log('Grid End');
+        canvas.renderAll();
+    }
 	this.addImage = function(source){
         var Left = canvas.width/2;
         var Top = canvas.height/2;
@@ -156,15 +230,33 @@ var prototypefabric = new function(){
 	}
 	this.opacity = function(opacity){
 		var obj = canvas.getActiveObject();
-        if(obj.class=="image"){
+        if(obj && obj.class=="image"){
             obj.setOpacity(opacity/100);
+        }
+        else
+        {
+            obj = canvas.getActiveGroup();
+            if(obj) {
+                for (var i = 0; i < obj._objects.length; i++) {
+                    obj._objects[i].opacity = opacity / 100;
+                }
+            }
         }
 		canvas.renderAll();
 	}
     this.textopacity = function(opacity){
         var obj = canvas.getActiveObject();
-        if(obj.class=="text"){
+        if(obj && obj.class=="text"){
             obj.setOpacity(opacity/100);
+        }
+        else
+        {
+            obj = canvas.getActiveGroup();
+            if(obj) {
+                for (var i = 0; i < obj._objects.length; i++) {
+                    obj._objects[i].opacity = opacity / 100;
+                }
+            }
         }
         canvas.renderAll();
     }
@@ -174,78 +266,180 @@ var prototypefabric = new function(){
 	}
 
 	this.duplicate = function(){
-//		canvas.loadFromJSON('{"objects":[{"type":"i-text","originX":"left","originY":"top","left":100,"top":100,"width":183.3,"height":52.43,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeLineJoin":"miter","strokeMiterLimit":10,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"clipTo":null,"backgroundColor":"transparent","fillRule":"nonzero","globalCompositeOperation":"source-over","text":"hello world","fontSize":40,"fontWeight":"normal","fontFamily":"Times New Roman","fontStyle":"","lineHeight":1.16,"textDecoration":"","textAlign":"center","textBackgroundColor":"","styles":{}},{"type":"image","originX":"left","originY":"top","left":51,"top":142,"width":300,"height":220,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeLineJoin":"miter","strokeMiterLimit":10,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"clipTo":null,"backgroundColor":"","fillRule":"nonzero","globalCompositeOperation":"source-over","src":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD//gA7Q1JFQVRPUjogZ2QtanBl…QXDssQDNCvy7s4ArWtdatooFUzc/WsO9PlWVmg+YOm5iepNXNP0y3ltgzJkk1yciN/aScU2f/Z","filters":[],"crossOrigin":"","alignX":"none","alignY":"none","meetOrSlice":"meet"}],"background":"#0D1E2C"}');
 		var obj = canvas.getActiveObject();
-		if (obj.class == "text") {
-            var clone = obj.clone();
-            clone.set({
-                top: clone.get('top') + 10,
-                left: clone.get('left') + 10,
-                class: obj.class,
-                //original_scaleX: clone.get('scaleX'),
-                //original_scaleY: clone.get('scaleY'),
-                //original_left: clone.get('left') + 10,
-                //original_top: clone.get('top') + 10,
-                hasControls: true,
-                angle:obj.angle,
-                fill:obj.fill,
-                scaleY:obj.scaleY,
-                scaleX:obj.scaleX
-            });
-            //clone.color = _color;
-            canvas.add(clone);
-            canvas.setActiveObject(clone);
-            canvas.renderAll();
-        }
-        else if(obj.class == "image"){
-            console.log(obj);
-            var col =  obj.filters[0].color;
-			fabric.Image.fromURL(obj.source, function(img) {
-	            img.set({
-	                top: obj.get('top') + 10,
-	                left: obj.get('left') + 10,
-	                class: obj.class,
-	                //original_scaleX: img.get('scaleX'),
-	                //original_scaleY: img.get('scaleY'),
-	                //original_left: img.get('left') + 10,
-	                //original_top: img.get('top') + 10,
-	                hasControls: true,
-	                angle:obj.angle,
-	                fill:obj.fill,
-	                scaleY:obj.scaleY,
-	                scaleX:obj.scaleX,
-	                opacity:obj.opacity
-	            });
-                var filter = new fabric.Image.filters.Tint({
-                    color: col,
-                    opacity: 1
+        if(obj) {
+            if (obj.class == "text") {
+                console.log("HERE in TEXT");
+                var clone = obj.clone();
+                clone.set({
+                    top: clone.get('top') + 10,
+                    left: clone.get('left') + 10,
+                    class: obj.class,
+                    //original_scaleX: clone.get('scaleX'),
+                    //original_scaleY: clone.get('scaleY'),
+                    //original_left: clone.get('left') + 10,
+                    //original_top: clone.get('top') + 10,
+                    hasControls: true,
+                    angle: obj.angle,
+                    fill: obj.fill,
+                    scaleY: obj.scaleY,
+                    scaleX: obj.scaleX
                 });
-                img.filters[0]=filter;
-                img.applyFilters(canvas.renderAll.bind(canvas));
-                console.log(img);
+                //clone.color = _color;
+                canvas.add(clone);
+                canvas.setActiveObject(clone);
+                canvas.renderAll();
+            }
+            else if (obj.class == "image") {
+                console.log("HERE in IMAGE");
+                console.log(obj);
+                var col = "";
+                if(obj.filters.length > 0)
+                    col = obj.filters[0].color;
+                fabric.Image.fromURL(obj.source, function (img) {
+                    img.set({
+                        top: obj.get('top') + 10,
+                        left: obj.get('left') + 10,
+                        class: obj.class,
+                        //original_scaleX: img.get('scaleX'),
+                        //original_scaleY: img.get('scaleY'),
+                        //original_left: img.get('left') + 10,
+                        //original_top: img.get('top') + 10,
+                        hasControls: true,
+                        angle: obj.angle,
+                        fill: obj.fill,
+                        scaleY: obj.scaleY,
+                        scaleX: obj.scaleX,
+                        opacity: obj.opacity
+                    });
+                    if(col != ""){
+                        var filter = new fabric.Image.filters.Tint({
+                            color: col,
+                            opacity: 1
+                        });
+                        img.filters[0] = filter;
+                        img.applyFilters(canvas.renderAll.bind(canvas));
+                    }
 
-                canvas.add(img);
-			  	canvas.renderAll();
-	        });
-	        canvas.renderAll();
-		}
+                    canvas.add(img);
+                    canvas.renderAll();
+                });
+                canvas.renderAll();
+            }
+        }
+        else
+        {
+            alert();
+            obj = canvas.getActiveGroup();
+            if(obj) {
+                console.log(obj);
+                for (var i = 0; i < obj._objects.length; i++) {
+                    if (obj._objects[i].class == "text") {
+                        var clone = obj._objects[i].clone();
+                        console.log('top');
+                        console.log(obj._objects[i].get('top'));
+                        console.log('left');
+                        console.log(obj._objects[i].get('left'));
+                        clone.set({
+                            top: obj._objects[i].get('top') + 10,
+                            left: obj._objects[i].get('left') + 10,
+                            class: obj.class,
+                            //original_scaleX: clone.get('scaleX'),
+                            //original_scaleY: clone.get('scaleY'),
+                            //original_left: clone.get('left') + 10,
+                            //original_top: clone.get('top') + 10,
+                            hasControls: true,
+                            angle: obj._objects[i].angle,
+                            fill: obj._objects[i].fill,
+                            scaleY: obj._objects[i].scaleY,
+                            scaleX: obj._objects[i].scaleX
+                        });
+                        canvas.add(clone);
+                        canvas.setActiveObject(clone);
+                        canvas.renderAll();
+                    }
+                    else if (obj._objects[i].class == "image") {
+
+                        var object = obj._objects[i];
+                        console.log(object.left);
+                        //var col = obj._objects[i].filters[0].color;
+                        var col = object.filters[0].color;
+                        fabric.Image.fromURL(object.source, function (img) {
+                            img.set({
+                                top: object.top + 10,
+                                left: object.left + 10,
+                                class: object.class,
+                                hasControls: true,
+                                angle: object.angle,
+                                fill: object.fill,
+                                scaleY: object.scaleY,
+                                scaleX: object.scaleX,
+                                opacity: object.opacity
+                            });
+                            var filter = new fabric.Image.filters.Tint({
+                                color: col,
+                                opacity: 1
+                            });
+                            img.filters[0] = filter;
+                            img.applyFilters(canvas.renderAll.bind(canvas));
+                            console.log(img);
+
+                            canvas.add(img);
+                            canvas.renderAll();
+                        });
+                        canvas.renderAll();
+                    }
+                }
+            }
+        }
 	}
 	this.setcolor = function(color) {//Latest Modified
         console.log('--== >> '+color);
       $("#ColorVal").val(color);
-		var obj = canvas.getActiveObject();
-		obj.setColor(color);
-		canvas.renderAll();
+
+        var obj = canvas.getActiveObject();
+        if(obj){
+            obj.fill = color;
+            console.log(color);
+        }
+        else
+        {
+            obj = canvas.getActiveGroup();
+            if(obj) {
+                for (var i = 0; i < obj._objects.length; i++) {
+                    obj._objects[i].fill = color;
+                    console.log(' OBJ '+obj._objects[i].color);
+                }
+            }
+        }
+        canvas.renderAll();
+
 	}
 
     this.setImgcolor = function(color) {//Latest Modified
-        var object = canvas.getActiveObject();
-        var filter = new fabric.Image.filters.Tint({
-            color: color,
-            opacity: 1
-        });
-        object.filters[0]=filter;
-        object.applyFilters(canvas.renderAll.bind(canvas));
+        //var object = canvas.getActiveObject();
+        var obj = canvas.getActiveObject();
+        if(obj){
+             var filter = new fabric.Image.filters.Tint({
+                        color: color,
+                        opacity: 1
+                    });
+                    obj.filters[0] = filter;
+                    obj.applyFilters(canvas.renderAll.bind(canvas));
+        }
+        else {
+            obj = canvas.getActiveGroup();
+            if (obj) {
+                for (var i = 0; i < obj._objects.length; i++) {
+                    var filter = new fabric.Image.filters.Tint({
+                        color: color,
+                        opacity: 1
+                    });
+                    obj._objects[i].filters[0] = filter;
+                    obj._objects[i].applyFilters(canvas.renderAll.bind(canvas));
+                }
+            }
+        }
 
     }
 

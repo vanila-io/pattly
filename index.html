@@ -20,6 +20,7 @@
         <!-- Custom css -->
         <link rel="stylesheet" type="text/css" href="css/custom.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.1/spectrum.min.css">
+
         </head>
         <body>
         <div class="contWrapper">
@@ -58,6 +59,11 @@
               <input id="colorpickerHolder" type="text" class="inps">
             </p>-->
                     <input id = "backgroundColorPicker" type='text' class="insp custom">
+                <center>
+                    <div class="input-field">
+                        <div class="waves-effect waves-light btn" id="Gridbtn" style="background-color:#FFFF00;color:black;">Enter Grid</div>
+                    </div>
+                </center>
             </div>
           </li>
           <li class="no-padding">
@@ -65,7 +71,7 @@
             <div class="collapsible-body">
               <a id="browse" class="waves-effect waves-light btn btnBrowse">Upload icon</a>
 
-                <input type="file" id="hidden-input" style="display:none;">
+                <input type="file" id="hidden-input" multiple style="display:none;">
                 <a id="browse1" class="waves-effect waves-light btn" style="display:none;margin-top:5px;">Browse Svg</a>
                 <input type="file" id="hidden-input1" style="display:none;">
                     <form action="#" class="formGraphics">
@@ -87,11 +93,17 @@
             <div class="collapsible-body">
               <a id="addtext" class="waves-effect waves-light btn  btnBrowse">Add Text</a>
                   <form action="#" class="formText">
+                        <div class="input-field col s12">
+                            <label class="active" for="font" >Font</label>
+                              <select id="txtfont" class="browser-default">
+                              </select>
+                        </div>
                         <div class="range-field">
                           <label for="test5b">Opacity</label>
                           <input type="range" id="test5b" min="0" max="100">
-                        </div>
+                        </div><br/>
                     </form>
+
                     <a class="waves-effect waves-light btn" id="duplicateText">Duplicate</a>
                     <a class="waves-effect waves-light btn" id="removeText">Remove</a><br>
                     <span style="text-align: left;">
@@ -100,6 +112,7 @@
                         <label class="active" for="ColorVal" size="50%">Color</label>
                         <input id="ColorVal" type="text" value="">
                     </span>
+
             </div>
           </li>
         <li class="no-padding">
@@ -142,7 +155,7 @@
     <script type="text/javascript" src="js/jcolor.js"></script>
     <!-- fabric js -->
     <script type="text/javascript" src="js/fabric.min.js"></script>
-    <script type="text/javascript" src="js/custom-fabric.js"></script>
+   
     
     <script>
         function fbs_click(TheImg) {
@@ -153,6 +166,7 @@
         }
     </script>
     <script type="text/javascript" src="js/script.js"></script>
+     <script type="text/javascript" src="js/custom-fabric.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.1/spectrum.min.js"></script>
 
     <script>
@@ -174,5 +188,34 @@
             }
         });
     </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script> 
+    <script> 
+        WebFont.load({
+                    google: { 
+                           families: ['Open Sans',
+                                    'Roboto',
+                                    'Lato',
+                                    'Oswald',
+                                    'Lora',
+                                    'Source Sans Pro',
+                                    'Montserrat',
+                                    'Raleway',
+                                    'Ubuntu',
+                                    'Droid Serif',
+                                    'Merriweather',
+                                    'Indie Flower',
+                                    'Titillium Web',
+                                    'Poiret One',
+                                    'Oxygen',
+                                    'Yanone Kaffeesatz',
+                                    'Lobster',
+                                    'Playfair Display',
+                                    'Fjalla One',
+                                    'Inconsolata',
+                                    'Droid Sans',
+                                    'Droid Serif']
+                         } 
+         }); 
+   </script>
     </body>
 </html>
