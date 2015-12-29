@@ -5,10 +5,11 @@ var prototypefabric = new function(){
 	canvas.renderAll();
     console.log(_gridFlag);
     
-        canvas.on('object:moving', function(options) { 
-            if(_gridFlag==1)
+        canvas.on('object:moving', function(options) 
+        { 
+            if($("#GridRT").is(':checked') && _gridFlag==1)
             {
-              options.target.set({
+                options.target.set({
                 left: Math.round(options.target.left / _gridSize) * _gridSize,
                 top: Math.round(options.target.top / _gridSize) * _gridSize
               });
@@ -17,7 +18,22 @@ var prototypefabric = new function(){
 
     canvas.on('object:selected', function(o){
         var object = o.target;
-        $("#ImgColorVal").val();
+        console.log(object.fill);
+        $(".sp-preview-inner").css('backgroundColor',object.fill);
+        $("#ColorVal").val(object.fill);
+        $(".sp-preview-inner").css('backgroundColor',object.fill);
+        if(object.class == "image"){
+            $("#ImgColorVal").val(object.color);
+            $(".sp-preview-inner").css('backgroundColor',object.color);
+        }
+        if(object.class == "text")
+        {
+          $("#txtfont").val(object.fontFamily);
+            $(".browser-default").css('setBackgroundColor',object.fontFamily);  
+        }
+        $("#test5b").val(object.opacity*100);
+        $("#test5a").val(object.opacity*100);
+        
         console.log(object);
 
     });
@@ -27,10 +43,10 @@ var prototypefabric = new function(){
             left: 100,
             top: 100,
             backgroundColor: 'transparent',
-            textAlign : 'center' ,
+            textAlign : 'left' ,
             class: 'text',
-            originX : "center",
-            originY : "center",
+            originX : "left",
+            originY : "left",
             fontFamily : _txtfontSelected
         });
         console.log(text);
@@ -105,6 +121,38 @@ var prototypefabric = new function(){
         canvas.renderAll();
     }
 
+    this.angle_top_down1 = function(_flag,val){
+        var obj1 = canvas.getActiveGroup();
+        if(obj1) {
+            if(_flag == 1)
+            {
+            obj1.angle = obj1.angle + val;
+            }
+            else
+            {
+                obj1.angle = obj1.angle - val;
+            }
+        }
+        else
+        {
+            obj1 = canvas.getActiveGroup();
+            if(obj1) {
+                if (_flag == 1) {
+                    for(var i = 0 ; i < obj1._objects.length ; i++) {
+                        obj1._objects[i].angle = obj1._objects[i].angle + val;
+                    }
+                }
+                else {
+                    for(var i = 0 ; i < obj1._objects.length ; i++) {
+                        obj1._objects[i].angle = obj1._objects[i].angle - val;
+                    }
+                }
+            }
+        }
+        canvas.renderAll();
+    }
+
+
 	this.setobjectsize = function(width, height)
     {
         canvas.setHeight(height);
@@ -125,6 +173,7 @@ var prototypefabric = new function(){
     this.keyboard_Movement = function(Up, Down, Right, Left)
     {
         var obj = canvas.getActiveObject();
+        var obj1 =canvas.getActiveGroup();
         if(obj) {
             obj.top = obj.top + Up;
             obj.top = obj.top - Down;
@@ -132,14 +181,30 @@ var prototypefabric = new function(){
             obj.left = obj.left + Right;
             canvas.renderAll();
         }
+        else 
+        {
+            obj1.top = obj1.top + Up;
+            obj1.top = obj1.top - Down;
+            obj1.left = obj1.left - Left;
+            obj1.left = obj1.left + Right;
+            canvas.renderAll();
+
+        }
+       
+          
     }
+
 
     this.ExportImage = function(width, height,ExportWidth,ExportHeight)
     {
+        if(_gridFlag==0)
+        {
+            //this.removeGrid();
         canvas.discardActiveGroup();
         canvas.discardActiveObject();
         var _base64 = canvas.toDataURL();
         console.log(_base64);
+        //this.makeGrid();
         TempCanvas = window._tmpCanvas = new fabric.Canvas(fabric.util.createCanvasElement());
         TempCanvas.setWidth(ExportWidth);
         TempCanvas.setHeight(ExportHeight);
@@ -147,8 +212,31 @@ var prototypefabric = new function(){
             TempCanvas.renderAll();
             url = TempCanvas.toDataURL();
             window.open(url);
+            console.log(url);
             window.focus();
+
         });
+        }
+        else
+        {
+        this.removeGrid();
+        canvas.discardActiveGroup();
+        canvas.discardActiveObject();
+        var _base64 = canvas.toDataURL();
+        console.log(_base64);
+        this.makeGrid();
+        TempCanvas = window._tmpCanvas = new fabric.Canvas(fabric.util.createCanvasElement());
+        TempCanvas.setWidth(ExportWidth);
+        TempCanvas.setHeight(ExportHeight);
+        TempCanvas.setBackgroundColor({source: _base64, repeat: 'repeat'}, function () {
+            TempCanvas.renderAll();
+            url = TempCanvas.toDataURL();
+            window.open(url);
+            console.log(url);
+            window.focus();
+
+        });  
+        }
     }
 
    
@@ -162,6 +250,10 @@ var prototypefabric = new function(){
             }
         });
     }
+     // this.checkRatio = function (){
+        
+     //    });
+    //}
 
     this.makeGrid = function () {
         this.removeGrid();
@@ -219,15 +311,103 @@ var prototypefabric = new function(){
             img.originY = "center";
             img.top = Top;
             img.left = Left;
+            img.color = "#0000ff";
             console.log(img.width);
 			canvas.add(img);
 		});
 	}
 
 	this.changeBackground = function(color){
+         $("#canvascolor").val(color);
 		canvas.setBackgroundColor(color);
 		canvas.renderAll();
 	}
+    this.FontBold = function()
+    {
+      var obj = canvas.getActiveObject();
+      console.log(obj);
+      if(obj.class=="text")
+      {
+            obj.set
+        ({
+            fontWeight: 'bold'
+
+        });
+       }
+       canvas.renderAll();
+    }
+     this.FontUnderline = function()
+    {
+      var obj = canvas.getActiveObject();
+      console.log(obj);
+      if(obj.class=="text")
+      {
+            obj.set
+        ({
+            textDecoration: 'underline'
+
+        });
+       }
+       canvas.renderAll();
+    }
+    this.Fontitalic = function()
+    {
+      var obj = canvas.getActiveObject();
+      console.log(obj);
+      if(obj.class=="text")
+      {
+            obj.set
+        ({
+            fontStyle: 'italic',
+           fontFamily: 'Delicious'
+
+        });
+       }
+       canvas.renderAll();
+    }
+    this.FontAlignRight = function()
+    {
+      var obj = canvas.getActiveObject();
+      console.log(obj);
+      if(obj.class=="text")
+      {
+            obj.set
+        ({
+            textAlign: 'right'
+
+        });
+       }
+       canvas.renderAll();
+    }
+     this.FontAlignleft = function()
+    {
+      var obj = canvas.getActiveObject();
+      console.log(obj);
+      if(obj.class=="text")
+      {
+            obj.set
+        ({
+            textAlign: 'left'
+
+        });
+       }
+       canvas.renderAll();
+    }
+     this.FontAlignCenter = function()
+    {
+      var obj = canvas.getActiveObject();
+      console.log(obj);
+      if(obj.class=="text")
+      {
+            obj.set
+        ({
+            textAlign: 'center'
+
+        });
+       }
+       canvas.renderAll();
+    }
+
 	this.opacity = function(opacity){
 		var obj = canvas.getActiveObject();
         if(obj && obj.class=="image"){
@@ -283,7 +463,8 @@ var prototypefabric = new function(){
                     angle: obj.angle,
                     fill: obj.fill,
                     scaleY: obj.scaleY,
-                    scaleX: obj.scaleX
+                    scaleX: obj.scaleX,
+                    color:obj.color
                 });
                 //clone.color = _color;
                 canvas.add(clone);
@@ -331,19 +512,19 @@ var prototypefabric = new function(){
         {
             alert();
             obj = canvas.getActiveGroup();
+            canvas.discardActiveGroup().renderAll();
             if(obj) {
                 console.log(obj);
                 for (var i = 0; i < obj._objects.length; i++) {
+                    //console.log(obj._objects[i].class);
                     if (obj._objects[i].class == "text") {
                         var clone = obj._objects[i].clone();
-                        console.log('top');
-                        console.log(obj._objects[i].get('top'));
-                        console.log('left');
-                        console.log(obj._objects[i].get('left'));
+                        var _topVar = obj.top + obj._objects[i].top + 10 + (obj.height/2);
+                        var _leftVar = obj.left + obj._objects[i].left + 10 + (obj.width/2);
                         clone.set({
-                            top: obj._objects[i].get('top') + 10,
-                            left: obj._objects[i].get('left') + 10,
-                            class: obj.class,
+                            top: _topVar,
+                            left: _leftVar,
+                            class: obj._objects[i].class,
                             //original_scaleX: clone.get('scaleX'),
                             //original_scaleY: clone.get('scaleY'),
                             //original_left: clone.get('left') + 10,
@@ -356,7 +537,6 @@ var prototypefabric = new function(){
                         });
                         canvas.add(clone);
                         canvas.setActiveObject(clone);
-                        canvas.renderAll();
                     }
                     else if (obj._objects[i].class == "image") {
 
@@ -390,6 +570,7 @@ var prototypefabric = new function(){
                         canvas.renderAll();
                     }
                 }
+                canvas.renderAll();
             }
         }
 	}
@@ -424,8 +605,10 @@ var prototypefabric = new function(){
                         color: color,
                         opacity: 1
                     });
+                    obj.color = color;
                     obj.filters[0] = filter;
                     obj.applyFilters(canvas.renderAll.bind(canvas));
+                    $("#ImgColorVal").val(color);
         }
         else {
             obj = canvas.getActiveGroup();

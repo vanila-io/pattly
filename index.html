@@ -49,6 +49,16 @@
              <input id="height" type="text" value="400">
              <label class="active" for="height">Height</label>
             </div>
+            <label>Gridsize</label>
+              <select class="browser-default" id="GridSize" style="background-color:lightgrey;color:black;" >
+                <option value="0.5">0.5</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+              </select>
+              <div class="input-field">
+            <input type="checkbox" id="GridRT" class="chkbx"  value="Ratio">
+              <label for="GridRT">SnaptoGrid</label>
+              </div>
             <div class="input-field">
             <input type="checkbox" id="ratio" class="chkbx"  value="Car">
               <label for="ratio">Ratio</label>
@@ -59,9 +69,10 @@
               <input id="colorpickerHolder" type="text" class="inps">
             </p>-->
                     <input id = "backgroundColorPicker" type='text' class="insp custom">
+                     <input id="canvascolor" type="text" value="#0000ff">
                 <center>
                     <div class="input-field">
-                        <div class="waves-effect waves-light btn" id="Gridbtn" style="background-color:#FFFF00;color:black;">Enter Grid</div>
+                        <div class="waves-effect waves-light btn" id="Gridbtn" style="background-color:lightgrey;color:black;">Enter Grid</div>
                     </div>
                 </center>
             </div>
@@ -85,7 +96,7 @@
                     <input id = "imageColorPicker" type='text' class="insp custom">
                     <br/>
                     <label class="active" for="ImgColorVal" size="50%">Color</label>
-                    <input id="ImgColorVal" type="text" value="">
+                    <input id="ImgColorVal" type="text" value="#002aff">
             </div>
           </li>
           <li class="no-padding">
@@ -98,10 +109,19 @@
                               <select id="txtfont" class="browser-default">
                               </select>
                         </div>
+                        <br>
+                     <a class="waves-effect waves-light btn" id="bold"> <i class="fa fa-bold "></i></a>
+                     <a class="waves-effect waves-light btn" id="underline"><i class="fa fa-underline "></i></a>
+                     <a class="waves-effect waves-light btn" id="italic"><i class="fa fa-italic "></i></a>
+                     <a class="waves-effect waves-light btn" id="alignright"><i class="fa fa-align-right"></i></a>
+                     <a class="waves-effect waves-light btn" id="alignleft"><i class="fa fa-align-left"></i></a>
+                     <a class="waves-effect waves-light btn" id="aligncenter"><i class="fa fa-align-center"></i></a>
+                     <br>
                         <div class="range-field">
                           <label for="test5b">Opacity</label>
                           <input type="range" id="test5b" min="0" max="100">
                         </div><br/>
+
                     </form>
 
                     <a class="waves-effect waves-light btn" id="duplicateText">Duplicate</a>
@@ -110,7 +130,7 @@
                         <input id ="textColorPicker" type='text' class="insp custom" >
                         <br/>
                         <label class="active" for="ColorVal" size="50%">Color</label>
-                        <input id="ColorVal" type="text" value="">
+                        <input id="ColorVal" type="text" value="#002aff">
                     </span>
 
             </div>
@@ -177,7 +197,6 @@
             allowEmpty:true,
             move: function(color) {
                 prototypefabric.setcolor(color.toHexString());
-                console.log("sdf");
             }
         });
         $("#backgroundColorPicker").spectrum({

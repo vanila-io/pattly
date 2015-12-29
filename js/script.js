@@ -3,6 +3,8 @@ var _color = "#0000ff";
 var _ImgColor = "#0000ff";
 var _gridSize = 20;
 var _gridColor = "#9898a1";
+var SnaptoGrid = 0;
+//var Grid=1;
 $(document).ready(function(){
 	/* find ratio of canvas */
 
@@ -79,16 +81,12 @@ $(document).ready(function(){
         }
     }
 
-  $(".button-collapse").sideNav();
-  // Initialize collapsible (uncomment the line below if you use the dropdown variation)
-  //$('.collapsible').collapsible();
-
- $(document).ready(function(){
-    $('.collapsible').collapsible({
+     $(".button-collapse").sideNav();
+     $(document).ready(function(){
+     $('.collapsible').collapsible({
       accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
     });
   });
-	//$("div.canvas-container").css({margin:"0 auto"});
 
     $('#addtext').click(function(){
         var _txtfontSelected = $( "#txtfont option:selected" ).val();
@@ -103,13 +101,6 @@ $(document).ready(function(){
         var _txtfontSelected = $( "#txtfont option:selected" ).val();
         prototypefabric.changeTextFont(_txtfontSelected);
     });
-
-
-    /*$('#addtext').click(function(){
-        var _txtfontSelected = $( "#txtfont option:selected" ).val();
-        prototypefabric.addtext(_txtfontSelected);
-    });*/
-	/* browse / browse Svg*/
 	$('#browse,#browse1').click(function(){
 		$("#hidden-input").trigger('click');
 	});
@@ -127,9 +118,14 @@ $(document).ready(function(){
         console.log("HERE IN #test5b");
         prototypefabric.textopacity(opacity);
     });
-    $("#duplicate").click(function(){
-    	prototypefabric.duplicate();
+     $("#duplicate").click(function(){
+     	prototypefabric.duplicate();
+
+     });
+     $("#canvascolor").change(function(){
+        prototypefabric.changeBackground($(this).val());
     });
+
     $("#remove").click(function(){
     	prototypefabric.removeObj();
     });
@@ -138,6 +134,24 @@ $(document).ready(function(){
     });
     $("#removeText").click(function(){
     	prototypefabric.removeObj();
+    });
+     $("#bold").click(function(){
+        prototypefabric.FontBold ();
+    });
+      $("#underline").click(function(){
+        prototypefabric.FontUnderline ();
+    });
+      $("#italic").click(function(){
+        prototypefabric.Fontitalic();
+    });
+      $("#alignright").click(function(){
+        prototypefabric.FontAlignRight();
+    });
+      $("#alignleft").click(function(){
+        prototypefabric.FontAlignleft();
+    });
+      $("#aligncenter").click(function(){
+        prototypefabric.FontAlignCenter();
     });
 
 	/***************************** AHMAD's CODE *****************************/
@@ -156,8 +170,15 @@ $(document).ready(function(){
     var keycheck = false;
     $(window).bind('keydown', function(e) {
         var keycheck = true;
+        alert(e.keyCode);
         map[e.keyCode] = e.type;
         console.log(map);
+        // if(e.keyCode == 13)
+        // {
+        //     prototypefabric.changeBackground(_color);
+        //     return;
+        // }
+
         if(e.keyCode == 46)
         {
             prototypefabric.removeObj();
@@ -166,18 +187,22 @@ $(document).ready(function(){
         if(map[17] && map[38]&&map[16])//Rotate Top to down with increment of 10
         {
             prototypefabric.angle_top_down(1,50);
+             prototypefabric.angle_top_down1(1,50);
             return;
         }
         else if(map[17] && map[40]&&map[16])//Rotate Down to top with increment of 10
         {
             prototypefabric.angle_top_down(0,50);
+             prototypefabric.angle_top_down1(0,50);
         }
         else if (map[17] && map[38]) { //Rotate Top to down with increment of 1
             prototypefabric.angle_top_down(1,1);
+             prototypefabric.angle_top_down1(1,1);
 
         }
         else if (map[17] && map[40]) {//Rotate Down to top with increment of 1
             prototypefabric.angle_top_down(0,1);
+             prototypefabric.angle_top_down1(0,1);
 
         }
         else if(map[16] && map[38] )//top with increment of 10
@@ -239,6 +264,28 @@ $(document).ready(function(){
             map = [];
         keycheck = false;
     });
+    $("#GridSize").change(function(){
+       console.log('here in Gridsize');
+        var Grid  = $('#GridSize').val();
+        _gridSize = 20 * Grid; 
+        
+    });
+    
+
+    // $("#GridRT").change(function()
+    //        {
+    //          if(_gridFlag==1){
+    //           options.target.set({
+    //             left: Math.round(options.target.left / _gridSize) * _gridSize,
+    //             top: Math.round(options.target.top / _gridSize) * _gridSize
+    //           });
+    //       }
+            
+    
+    // });        
+
+      
+
 
 	$("#width,#height").keyup(function(){
 		var width  = $('#width').val();
@@ -257,7 +304,7 @@ $(document).ready(function(){
 	});
 
 	$('#ratio').change(function(){ 
-		if($(this).is(':checked')){//If Ratio Checkbox clicked
+		if($(this).is(':checked')){//If Ratio Checkbox dicked
 			var width = $("#width").val();
 			var height = $("#height").val();
 			ratio_HW = parseInt(height)/parseInt(width);
@@ -283,7 +330,9 @@ $(document).ready(function(){
             'position' :'absolute',
             'margin-left': mleft,
             'margin-top':mtop
+
         });
+
     });
 
     $("#Gridbtn").click(function(){
@@ -307,7 +356,7 @@ $(document).ready(function(){
                 color:col,
                 allowEmpty:true,
                 move: function(color) {
-                    prototypefabric.setImgcolor(color.toHexString());
+                    prototypefabric.setImgcolor(col);
                 }
             });
             prototypefabric.setImgcolor(col);
@@ -340,13 +389,25 @@ $(document).ready(function(){
         var col = $('#ColorVal').val();
         if(_color!=col) {
             prototypefabric.setcolor(col);
-            $("#textColorPicker").spectrum({
+            alert("sd");
+            /*$("#textColorPicker").spectrum({
                 color: col
-            });
+            });*/
 
             console.log("HERE");
             _color = col;
         }
+    });
+     $('#GridSize').change(function()
+    {
+        if(_gridFlag==1)
+            {
+                prototypefabric.makeGrid();
+            }
+            else
+            {
+                alert("Please Enter Grid First");
+            }
     });
     $('#ColorVal').onmove(function(){
         var col = $('#ColorVal').val();
