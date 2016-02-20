@@ -6,7 +6,8 @@
         <!--Import Google Icon Font-->
         <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- font awesome -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/font-awesome.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="css/materialize.min.css">
     
@@ -193,14 +194,14 @@
 
 
         $("#textColorPicker").spectrum({
-            color: "blue",
+            color: "#blue",
             allowEmpty:true,
             move: function(color) {
                 prototypefabric.setcolor(color.toHexString());
             }
         });
         $("#backgroundColorPicker").spectrum({
-            color: "blue",
+            color: "#0D1E2C",
             allowEmpty:true,
             move: function(color) {
                 prototypefabric.changeBackground(color.toHexString());

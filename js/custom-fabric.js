@@ -18,37 +18,36 @@ var prototypefabric = new function(){
 
     canvas.on('object:selected', function(o){
         var object = o.target;
-        console.log(object.fill);
-        $(".sp-preview-inner").css('backgroundColor',object.fill);
-        $("#ColorVal").val(object.fill);
-        $(".sp-preview-inner").css('backgroundColor',object.fill);
-        if(object.class == "image"){
+        if(object.class == "image"){//If Image is selected
             $("#ImgColorVal").val(object.color);
             $(".sp-preview-inner").css('backgroundColor',object.color);
+            $("#test5a").val(object.opacity*100);
+            console.log('here image Opacity >>>>>>>>> '+object.opacity);
         }
-        if(object.class == "text")
+        if(object.class == "text")//If text is selected
         {
+          $("#ColorVal").val(object.fill);
           $("#txtfont").val(object.fontFamily);
-            $(".browser-default").css('setBackgroundColor',object.fontFamily);  
+          $(".browser-default").css('setBackgroundColor',object.fontFamily);  
+          console.log('here text Opacity >>>>>>>>> '+object.opacity);
+          $("#test5b").val(object.opacity*100);
         }
-        $("#test5b").val(object.opacity*100);
-        $("#test5a").val(object.opacity*100);
         
-        console.log(object);
-
     });
-
 	this.addtext = function(_txtfontSelected){		
+         var _col = $("#ColorVal").val();
 		var text = new fabric.IText('hello world', {
             left: 100,
             top: 100,
             backgroundColor: 'transparent',
             textAlign : 'left' ,
             class: 'text',
-            originX : "left",
-            originY : "left",
+            originX : "center",
+            originY : "center",
+            fontFamily : _txtfontSelected,
+            fill: _col,
             fontFamily : _txtfontSelected
-        });
+            });
         console.log(text);
 		canvas.add(text);
 		canvas.renderAll();
@@ -425,6 +424,7 @@ var prototypefabric = new function(){
 		canvas.renderAll();
 	}
     this.textopacity = function(opacity){
+    	console.log(opacity);
         var obj = canvas.getActiveObject();
         if(obj && obj.class=="text"){
             obj.setOpacity(opacity/100);
@@ -449,7 +449,7 @@ var prototypefabric = new function(){
 		var obj = canvas.getActiveObject();
         if(obj) {
             if (obj.class == "text") {
-                console.log("HERE in TEXT");
+                //console.log("HERE in TEXT");
                 var clone = obj.clone();
                 clone.set({
                     top: clone.get('top') + 10,
@@ -472,11 +472,11 @@ var prototypefabric = new function(){
                 canvas.renderAll();
             }
             else if (obj.class == "image") {
-                console.log("HERE in IMAGE");
+                //console.log("HERE in IMAGE");
                 console.log(obj);
                 var col = "";
-                if(obj.filters.length > 0)
-                    col = obj.filters[0].color;
+                //if(obj.filters.length > 0)
+                    //col = obj.filters[i].fill;
                 fabric.Image.fromURL(obj.source, function (img) {
                     img.set({
                         top: obj.get('top') + 10,
@@ -493,14 +493,12 @@ var prototypefabric = new function(){
                         scaleX: obj.scaleX,
                         opacity: obj.opacity
                     });
-                    if(col != ""){
                         var filter = new fabric.Image.filters.Tint({
-                            color: col,
+                            color: obj.color,
                             opacity: 1
                         });
-                        img.filters[0] = filter;
+                        img.filters.push(filter);
                         img.applyFilters(canvas.renderAll.bind(canvas));
-                    }
 
                     canvas.add(img);
                     canvas.renderAll();
@@ -510,11 +508,10 @@ var prototypefabric = new function(){
         }
         else
         {
-            alert();
             obj = canvas.getActiveGroup();
             canvas.discardActiveGroup().renderAll();
             if(obj) {
-                console.log(obj);
+                //console.log(obj);
                 for (var i = 0; i < obj._objects.length; i++) {
                     //console.log(obj._objects[i].class);
                     if (obj._objects[i].class == "text") {
@@ -541,9 +538,10 @@ var prototypefabric = new function(){
                     else if (obj._objects[i].class == "image") {
 
                         var object = obj._objects[i];
-                        console.log(object.left);
+                        console.log(object);
                         //var col = obj._objects[i].filters[0].color;
-                        var col = object.filters[0].color;
+                        obj.filters.fill;
+                        var col = object.filters[0].fill;
                         fabric.Image.fromURL(object.source, function (img) {
                             img.set({
                                 top: object.top + 10,
@@ -636,12 +634,12 @@ var prototypefabric = new function(){
             }
             canvas.discardActiveGroup();
             canvas.renderAll();
-        }
+        }                      
         else{
             canvas.fxRemove(obj);
             canvas.renderAll();
         }
-        canvas.renderAll();
+        canvas.renderAll();                      
 	}
 
 	this.tint = function(color){
